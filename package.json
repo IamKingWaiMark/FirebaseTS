@@ -19,5 +19,10 @@
   "bugs": {
     "url": "https://github.com/IamKingWaiMark/FirebaseTS/issues"
   },
-  "homepage": "https://github.com/IamKingWaiMark/FirebaseTS#readme"
+  "homepage": "https://github.com/IamKingWaiMark/FirebaseTS#readme",
+  "devDependencies": {
+    "@angular-devkit/build-angular": "@latest",
+    "@angular/compiler-cli": "@latest",
+    "karma": "@latest"
+  }
 }
