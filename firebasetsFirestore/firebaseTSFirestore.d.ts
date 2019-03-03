@@ -10,10 +10,10 @@ export declare class Where {
     constructor(where: string, condition: "<=" | "<" | "==" | ">" | ">=", argument: any);
 }
 
-export class OrderBy {
+export declare class OrderBy {
     constructor(field: string, direction: "asc" | "desc");
 }
 
-export class Limit {
+export declare class Limit {
     constructor(limit: number);
 }
