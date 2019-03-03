@@ -1,4 +1,4 @@
-
+import { } from 'firebase/app';
 export declare class FirebaseTSFirestore {
-    listenTo(): void;
+    listenTo(from: string [], onUpdate: (result: firebase.firestore.QuerySnapshot) => void): any;
 }

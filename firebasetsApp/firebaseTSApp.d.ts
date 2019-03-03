@@ -9,6 +9,5 @@ export declare class FirebaseTSApp {
         storageBucket: string,
         messagingSenderId: string
     }): any[];
-
     static getFirestore(): firebase.firestore.Firestore;
 }
