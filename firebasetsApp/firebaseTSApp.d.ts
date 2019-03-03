@@ -10,5 +10,5 @@ export declare class FirebaseTSApp {
         messagingSenderId: string
     }): any[];
 
-    static getApp(): firebase.firestore.Firestore;
+    static getFirestore(): firebase.firestore.Firestore;
 }
