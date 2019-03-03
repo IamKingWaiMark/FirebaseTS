@@ -21,8 +21,8 @@
   },
   "homepage": "https://github.com/IamKingWaiMark/FirebaseTS#readme",
   "devDependencies": {
-    "@angular-devkit/build-angular": "@latest",
-    "@angular/compiler-cli": "@latest",
-    "karma": "@latest"
+    "@angular-devkit/build-angular": ">=0.13.0",
+    "@angular/compiler-cli": ">=6.0.0",
+    "karma": ">=4.0.0"
   }
 }
