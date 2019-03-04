@@ -3,10 +3,19 @@ import { FirebaseTSApp } from 'firebasets/firebasetsApp/firebaseTSApp';
 require("firebase/firestore");
 
 export class FirebaseTSFirestore {
-
-    listenTo(from, where, onUpdate){
+    constructor(){
+        this.listeners = new Map();
+    }   
+    // LISTEN TO DOCUMENT CHANGES
+    listenToDocument(name, from, onUpdate){
+        this.validateListenerName(name);  
+        return this.addListener(name, this.genDocumentReference(from).onSnapshot(results => onUpdate(results)));
+    }
+    // LISTEN TO COLLECTION CHANGES
+    listenToCollection(name, from, where, onUpdate){
+        this.validateListenerName(name);
+        // Start listening operations.
         let cr = this.genCollectionReference(from);
-        
         if((where != null || where != undefined) && where.length > 0) {
             let query = undefined;
             const whereArr = Array(where)[0];
@@ -15,11 +24,15 @@ export class FirebaseTSFirestore {
                 else query = whereArr[i].concatQuery(query);
             }
 
-            return query.onSnapshot(results => onUpdate(results));
+            return this.addListener(name, query.onSnapshot(results => onUpdate(results)));
         } 
-        return cr.onSnapshot(results => onUpdate(results));
+        return this.addListener(name, cr.onSnapshot(results => onUpdate(results)));
     }
+    // GENERATE A COLLECTION REFERENCE FROM A PATH.
     genCollectionReference(from){
+        // Check to see if the path provided leads to a collection.
+        this.checkCollectionPathValidity(from);
+
         const fromArr = Array(from)[0];
         let cr = undefined;
         let dr = undefined;
@@ -34,10 +47,72 @@ export class FirebaseTSFirestore {
                 dr = cr.doc(fromArr[i]);
             }
         }
-
         return cr;
     }
+    // GENERATE A DOCUMENT REFERENCE FROM A PATH.
+    genDocumentReference(from){
+        // Check to see if the path provided leads to a collection.
+        this.checkDocumentPathValidity(from);
 
+        const fromArr = Array(from)[0];
+        let cr = undefined;
+        let dr = undefined;
+        for(let i = 0; i < fromArr.length; i++){
+            if(i % 2 == 0){
+                if(cr === undefined){
+                    cr = FirebaseTSApp.getFirestore().collection(fromArr[i]);
+                } else {
+                    cr = dr.collection(fromArr[i]);
+                }
+            } else {
+                dr = cr.doc(fromArr[i]);
+            }
+        }
+        return dr;
+    }
+        
+    // Adds the listener.
+    addListener(listenerName, listener){     
+        this.listeners.set(listenerName, listener);
+        return listener;
+    }
+    // Stop listening to a snapshot
+    stopListeningTo(listenerName){
+        try{
+            this.listeners.get(listenerName)();
+            this.listeners.delete(listenerName);
+        } catch (err) {}
+    }
+    // Stop listening to all snapshots
+    stopListeningToAll(){
+        this.listeners.forEach(
+            (value, key, map) => {
+                this.stopListeningTo(key);
+            }
+        );
+    }
+    // Validates if the listener name valid. This means that the name is not in use or have not met the requirements to be a name.
+    validateListenerName(listenerName){
+        if(listenerName == null || listenerName == undefined || (typeof listenerName != typeof "") || listenerName.trim().length <= 0) throw "Listener name cannot be empty.";
+        else if(this.listeners.get(listenerName) !== undefined) throw `Listener name: ${listenerName} is already taken.`;
+    }
+    // COLLECTION VALIDATION METHODS //
+    checkCollectionPathValidity(from){
+        if(from == null || from == undefined || !this.isCollectionPath(from)) throw "Not a valid path to a collection.";
+    }
+    isCollectionPath(from){
+        return Array(from)[0].length % 2 == 1;
+    }
+    // COLLECTION VALIDATION METHODS END //
+
+    // DOCUMENT VALIDATION METHODS //
+    checkDocumentPathValidity(from){
+        if(from == null || from == undefined || !this.isDocumentPath(from)) throw "Not a valid path to a document.";
+    }
+    isDocumentPath(from){
+        return Array(from)[0].length % 2 == 0;
+    }
+    // DOCUMENT VALIDATION METHODS END //
 }
 
 

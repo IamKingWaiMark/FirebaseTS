@@ -2,7 +2,10 @@ import { } from 'firebase/app';
 
 
 export declare class FirebaseTSFirestore {
-    public listenTo(from: string [], where: Where[] | OrderBy [] | Limit [], onUpdate: (result: firebase.firestore.QuerySnapshot) => void): any;
+    public listenToCollection(name: string, from: string [], where: Where[] | OrderBy [] | Limit [], onUpdate: (result: firebase.firestore.QuerySnapshot) => void): any;
+    public listenToDocument(name: string, from: string [], onUpdate: (result: firebase.firestore.DocumentSnapshot) => void): any
+    public stopListeningTo(listenerName: string): void;
+    public stopListeningToAll(): void;
 }
 
 
