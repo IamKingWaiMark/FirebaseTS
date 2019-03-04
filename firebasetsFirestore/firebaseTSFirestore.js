@@ -6,6 +6,48 @@ export class FirebaseTSFirestore {
     constructor(){
         this.listeners = new Map();
     }   
+    // Adds data to the database.
+    create(from, data, onComplete){
+        if(data === undefined || data == null) throw "Error creating data. Data is null or undefined.";
+        if(this.isCollectionPath(from)) {
+            this.genCollectionReference(from).doc().set(data).then(() => {onComplete(true, "No Error");}).catch(err => {onComplete(false, err);});
+        } else if(this.isDocumentPath(from)){
+            this.genDocumentReference(from).set(data).then(() => {onComplete(true, "No Error");}).catch(err => {onComplete(false, err);});
+        }
+    }
+    // Delete data.
+    delete(from, onComplete){
+        // Check to see if the path provided leads to a collection.
+        this.checkDocumentPathValidity(from);
+        this.genDocumentReference(from).delete().then(() => {onComplete(true, "No Error");}).catch(err => {onComplete(false, err);});
+    }
+    // Update a document.
+    update(from, data, onComplete) {
+        // Check to see if the path provided leads to a collection.
+        this.checkDocumentPathValidity(from);
+        this.genDocumentReference(from).update(data).then(() => {onComplete(true, "No Error");}).catch(err => {onComplete(false, err);});
+    }
+     // Get data from a collection once.
+    getDocument(from, onComplete){
+        this.genDocumentReference(from).get().then(results => onComplete(results, "No Error")).catch(err=>{onComplete(null, err)});
+    }   
+    // Get data from a collection once.
+    getCollection(from, where, onComplete){
+        let cr = this.genCollectionReference(from);
+        if((where != null || where != undefined) && where.length > 0) {
+            let query = undefined;
+            const whereArr = Array(where)[0];
+            for(let i = 0; i < whereArr.length; i++){
+                if(query === undefined) query = whereArr[i].getQuery(cr);
+                else query = whereArr[i].concatQuery(query);
+            }
+
+            query.get().then(results => onComplete(results, "No Error")).catch(err=>{onComplete(null, err)});
+            return;
+        } 
+        cr.get().then(results => onComplete(results, "No Error")).catch(err=>{onComplete(null, err)});
+        return;
+    }
     // LISTEN TO DOCUMENT CHANGES
     listenToDocument(name, from, onUpdate){
         this.validateListenerName(name);  
