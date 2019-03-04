@@ -1,4 +1,4 @@
-import { FirebaseTSApp } from 'firebasets/firebasetsApp/firebaseTSApp';
+import { FirebaseTSApp } from '../firebasetsApp/firebaseTSApp';
 require("firebase/auth");
 
 export class FirebaseTSAuth {

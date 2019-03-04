@@ -1,5 +1,5 @@
 {
-  "name": "firebasets",
+  "name": "firebase4ts",
   "version": "0.0.1",
   "description": "Firebase in TypeScript",
   "main": "index.js",
@@ -12,7 +12,8 @@
   },
   "keywords": [
     "Firebase",
-    "TypeScript"
+    "TypeScript",
+    "Light Weight"
   ],
   "author": "King Wai Mark",
   "license": "MIT",
