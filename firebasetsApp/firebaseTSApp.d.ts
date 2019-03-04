@@ -1,4 +1,4 @@
-import { } from 'firebase/app';
+import { auth, firestore } from 'firebase/app';
 
 export declare class FirebaseTSApp {
     static init(configuration: {
@@ -9,5 +9,6 @@ export declare class FirebaseTSApp {
         storageBucket: string,
         messagingSenderId: string
     }): any[];
-    static getFirestore(): firebase.firestore.Firestore;
+    static getFirestore(): firestore.Firestore;
+    static getAuth(): auth.Auth;
 }

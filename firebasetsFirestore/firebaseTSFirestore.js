@@ -8,7 +8,7 @@ export class FirebaseTSFirestore {
     }   
     // Adds data to the database.
     create(from, data, onComplete){
-        if(data === undefined || data == null) throw "Error creating data. Data is null or undefined.";
+        if(data == undefined || data == null) throw "Error creating data. Data is null or undefined.";
         if(this.isCollectionPath(from)) {
             this.genCollectionReference(from).doc().set(data).then(() => {onComplete(true, "No Error");}).catch(err => {onComplete(false, err);});
         } else if(this.isDocumentPath(from)){
@@ -38,7 +38,7 @@ export class FirebaseTSFirestore {
             let query = undefined;
             const whereArr = Array(where)[0];
             for(let i = 0; i < whereArr.length; i++){
-                if(query === undefined) query = whereArr[i].getQuery(cr);
+                if(query == undefined) query = whereArr[i].getQuery(cr);
                 else query = whereArr[i].concatQuery(query);
             }
 
@@ -62,7 +62,7 @@ export class FirebaseTSFirestore {
             let query = undefined;
             const whereArr = Array(where)[0];
             for(let i = 0; i < whereArr.length; i++){
-                if(query === undefined) query = whereArr[i].getQuery(cr);
+                if(query == undefined) query = whereArr[i].getQuery(cr);
                 else query = whereArr[i].concatQuery(query);
             }
 
@@ -80,7 +80,7 @@ export class FirebaseTSFirestore {
         let dr = undefined;
         for(let i = 0; i < fromArr.length; i++){
             if(i % 2 == 0){
-                if(cr === undefined){
+                if(cr == undefined){
                     cr = FirebaseTSApp.getFirestore().collection(fromArr[i]);
                 } else {
                     cr = dr.collection(fromArr[i]);
@@ -101,7 +101,7 @@ export class FirebaseTSFirestore {
         let dr = undefined;
         for(let i = 0; i < fromArr.length; i++){
             if(i % 2 == 0){
-                if(cr === undefined){
+                if(cr == undefined){
                     cr = FirebaseTSApp.getFirestore().collection(fromArr[i]);
                 } else {
                     cr = dr.collection(fromArr[i]);
@@ -136,7 +136,7 @@ export class FirebaseTSFirestore {
     // Validates if the listener name valid. This means that the name is not in use or have not met the requirements to be a name.
     validateListenerName(listenerName){
         if(listenerName == null || listenerName == undefined || (typeof listenerName != typeof "") || listenerName.trim().length <= 0) throw "Listener name cannot be empty.";
-        else if(this.listeners.get(listenerName) !== undefined) throw `Listener name: ${listenerName} is already taken.`;
+        else if(this.listeners.get(listenerName) != undefined) throw `Listener name: ${listenerName} is already taken.`;
     }
     // COLLECTION VALIDATION METHODS //
     checkCollectionPathValidity(from){
@@ -155,6 +155,8 @@ export class FirebaseTSFirestore {
         return Array(from)[0].length % 2 == 0;
     }
     // DOCUMENT VALIDATION METHODS END //
+
+
 }
 
 

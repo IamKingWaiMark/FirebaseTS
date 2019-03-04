@@ -1,6 +1,3 @@
-import { } from 'firebase/app';
-
-
 export declare class FirebaseTSFirestore {
     public create<DT>(from: string [], data: DT, onComplete: (success: boolean, error?: any) => void): void;
     public delete(from: string [], onComplete: (success: boolean, error?: any) => void): void;
