@@ -23,11 +23,11 @@ export class FirebaseTSAuth {
         this.auth.signOut().then(() => onComplete(true)).catch(() => onComplete(true));
     }
 
-    listenToLoginStateChanges(onUpdate){
+    listenToLoginStateChanges(onChange){
         this.auth
         .onAuthStateChanged(
             (firebaseUser) => {
-                onUpdate(firebaseUser);
+                onChange(firebaseUser);
             }
         );
     }

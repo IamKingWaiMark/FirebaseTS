@@ -31,4 +31,30 @@
             })
             export class AppModule { }
 
----
+---  
+
+## Authentication Service  
+
+### Implementation
+
+1. Import **FirebaseTSAuth**  
+
+        import { FirebaseTSAuth } from 'firebasets/firebasetsAuth/firebaseTSAuth';
+
+2. Declare and initialize a FirebaseTSAuth service object.
+
+        const firebasetsAuthService = new FirebaseTSAuth();
+
+### Listen to user login state
+
+1. Call the listenToLoginStateChanges(onChange: (firebaseUser: firebase.User) => void): void;  
+
+        firebasetsAuthService.listenToLoginStateChanges(
+            firebaseUser => {     
+                if(firebasetsAuthService.isLoggedIn()){
+                //...
+                } else {
+                //...
+                }       
+            }
+        );
