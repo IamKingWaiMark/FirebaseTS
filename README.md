@@ -60,6 +60,7 @@
         );
 
 ### Methods
+---
 
 **Create User Account**
 
@@ -86,7 +87,7 @@ Sign in with a user account.
             "myEmail@MyEmail963.123.456",   // Email
             "myPassword",                   // Password
             (credentials, error) => {
-                //... This code will execute when it finish attemp to sign in.  
+                //... This code will execute when it finish attempt to sign in.  
             });
         });
 
@@ -110,7 +111,7 @@ Sends a instructional email to reset the password to a specified email address i
         firebasetsAuthService.sendPasswordResetEmail(
             "myEmail@MyEmail963.123.456",
             err => {
-                // ... This code will execute when it finish attemp to send an instructional email.
+                // ... This code will execute when it finish attempt to send an instructional email.
                 // It may or may not return an error. 
             }
         );
