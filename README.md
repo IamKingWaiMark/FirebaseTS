@@ -63,11 +63,7 @@
 
 **Create User Account**
 
-#### createAccountWith(  
-####    email: string,   
-####    password: string,  
-####    onComplete: (userCredentials: firebase.auth.UserCredential, error?: any) => void
-#### ): void;  
+#### createAccountWith(email: string, password: string, onComplete: (userCredentials: firebase.auth.UserCredential, error?: any) => void): void;  
 
 Creates a user account.
 
@@ -81,11 +77,7 @@ Creates a user account.
         
 **Sign in with user account**
 
-#### signInWith(  
-####    email: string,  
-####    password: string,  
-####    onComplete: (userCredentials: firebase.auth.UserCredential, error?: any) => void
-#### ): void;  
+#### signInWith(email: string, password: string, onComplete: (userCredentials: firebase.auth.UserCredential, error?: any) => void): void;
 
 Sign in with a user account.
 
