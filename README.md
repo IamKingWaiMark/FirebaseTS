@@ -108,7 +108,7 @@ Sign out.
 Sends a instructional email to reset the password to a specified email address in the database authentication system.    
 
         firebasetsAuthService.sendPasswordResetEmail(
-            "kingwaimark@gmail.com",
+            "myEmail@MyEmail963.123.456",
             err => {
                 // ... This code will execute when it finish attemp to send an instructional email.
                 // It may or may not return an error. 
@@ -135,7 +135,7 @@ Check if the signed in user have verified his email for the account. This method
 
 ---  
 **Check if a user is signed in**  
- 
+
 #### isLoggedIn(): void;
 
 Check if a user is signed in.  
