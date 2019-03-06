@@ -20,7 +20,10 @@ export class FirebaseTSAuth {
     }
 
     signOut(onComplete){
-        this.auth.signOut().then(() => onComplete(true)).catch(() => onComplete(true));
+        if(onComplete)
+            this.auth.signOut().then(() => onComplete(true)).catch(() => onComplete(true));
+         else 
+            this.auth.signOut();              
     }
 
     listenToLoginStateChanges(onChange){
@@ -40,8 +43,10 @@ export class FirebaseTSAuth {
     }
 
     sendPasswordResetEmail(email, onComplete){
-        this.auth.sendPasswordResetEmail(email)
-        .then(() => onComplete(`Instructions to reset password was sent to ${email}.`)).catch(()=>onComplete("Failed to send password reset email."));
+        if(onComplete)
+            this.auth.sendPasswordResetEmail(email)
+            .then(() => onComplete(`Instructions to reset password was sent to ${email}.`)).catch(()=>onComplete("Failed to send password reset email."));
+        else this.auth.sendPasswordResetEmail(email);
     }
 
     isEmailVerified(){

@@ -88,3 +88,39 @@ Sign in with a user account.
                 //... This code will execute when it finish attemp to sign in.  
             });
         });
+
+#### signInWith(email: string, password: string, onComplete: (userCredentials: firebase.auth.UserCredential, error?: any) => void): void;
+
+Sign out.  
+
+        firebasetsAuthService.signOut();  
+
+#### sendPasswordResetEmail(email: string, onComplete?: (error?: string) => void): void;  
+
+Sends a instructional email to reset the password to a specified email address in the database authentication system.    
+
+        firebasetsAuthService.sendPasswordResetEmail(
+            "kingwaimark@gmail.com",
+            err => {
+                // ... This code will execute when it finish attemp to send an instructional email.
+                // It may or may not return an error. 
+            }
+        );
+
+#### sendVerificaitonEmail(): void;
+
+Sends a instructional email to verify the email. This method will only work if a user is signed in. Will throw an error if no user is signed in.  
+
+        firebasetsAuthService.sendVerificaitonEmail();
+
+#### isEmailVerified(): void;
+
+Check if the logged in user have verified his email for the account. This method should only be called when a user is signed in.  
+
+        firebasetsAuthService.isEmailVerified();
+
+#### isLoggedIn(): void;
+
+Check if a user is signed in.  
+
+        firebasetsAuthService.isLoggedIn();

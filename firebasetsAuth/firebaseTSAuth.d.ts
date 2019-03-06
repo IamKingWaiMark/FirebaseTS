@@ -4,7 +4,7 @@ export declare class FirebaseTSAuth {
     public signOut(onComplete?: (success: boolean) => void): void;
     public listenToLoginStateChanges(onChange: (firebaseUser: firebase.User) => void): void;
     public sendVerificaitonEmail(): void;
-    public sendPasswordResetEmail(email: string, onComplete: (error?: string) => void): void;
+    public sendPasswordResetEmail(email: string, onComplete?: (error?: string) => void): void;
     public isEmailVerified(): boolean;
     public isLoggedIn(): boolean;
     public getAuth(): firebase.auth.Auth;
