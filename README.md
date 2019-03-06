@@ -6,8 +6,8 @@
         import { FirebaseTSApp } from 'firebasets/firebasetsApp/firebaseTSApp';
 3. Call the FirebaseTSApp.init(config) function in the imports array of the AppModule (**app.module.ts**)
 
-@NgModule({  
-    declarations: [  
+    @NgModule({  
+        declarations: [  
         ...  
     ],  
     imports: [  
