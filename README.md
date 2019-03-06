@@ -1,1 +1,4 @@
-## Firebase for Typescript developers
+## Firebase for Typescript Developers
+
+### Implementation
+npm i firebase firebasets --save
