@@ -6,24 +6,24 @@
         import { FirebaseTSApp } from 'firebasets/firebasetsApp/firebaseTSApp';
 3. Call the FirebaseTSApp.init(config) function in the imports array of the AppModule (**app.module.ts**)
 
-    @NgModule({  
-        declarations: [  
-        ...  
-    ],  
-    imports: [  
-        ...  
-        FirebaseTSApp.init({  
-            apiKey: "...",  
-            authDomain: "...",  
-            databaseURL: "...",  
-            projectId: "...",  
-            storageBucket: "...",  
-            messagingSenderId: "..."  
-        })  
-    ],  
-    providers: [],  
-    bootstrap: []  
-})  
-export class AppModule { }  
+            @NgModule({
+            declarations: [
+                AppComponent
+            ],
+            imports: [
+                BrowserModule,
+                FirebaseTSApp.init({
+                apiKey: "AIzaSyDK6cEcs4Tvcj8GhC296K8nA1rEsl766TY",
+                authDomain: "hssm-app.firebaseapp.com",
+                databaseURL: "https://hssm-app.firebaseio.com",
+                projectId: "hssm-app",
+                storageBucket: "hssm-app.appspot.com",
+                messagingSenderId: "788687351607"
+                })
+            ],
+            providers: [],
+            bootstrap: [AppComponent]
+            })
+            export class AppModule { }
 
 ---
