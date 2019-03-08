@@ -20,5 +20,8 @@
   "bugs": {
     "url": "https://github.com/IamKingWaiMark/FirebaseTS/issues"
   },
-  "homepage": "https://github.com/IamKingWaiMark/FirebaseTS#readme"
+  "homepage": "https://github.com/IamKingWaiMark/FirebaseTS#readme",
+  "dependencies": {
+    "firebase": "^5.8.5"
+  }
 }

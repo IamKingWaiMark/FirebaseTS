@@ -144,3 +144,44 @@ Check if a user is signed in.
         firebasetsAuthService.isLoggedIn();
 
 ---  
+
+## Firestore Service
+
+### Implementation
+
+1. Import FirebaseTSFirestore  
+
+        import { FirebaseTSFirestore } from 'firebasets/firebasetsFirestore/firebaseTSFirestore';  
+
+2. Create a FirebaseTSFirestore object.
+
+        const firebasetsFirestore = new FirebaseTSFirestore();
+
+---
+
+### Reading Data
+
+#### Getting document data once
+
+#### public getDocument(from: string [], onComplete: (result: firebase.firestore.DocumentSnapshot, error?: any) => void): void;
+
+Reads data from a document once.
+
+@param from: stirng [] - Takes in a array of string to specify the path to a document in the firestore database structure (collection, document, collection, document, ...). The length of the array MUST be even.  
+
+@param onComplete: (result: firebase.firestore.DocumentSnapshot, error?: any) => void - This function executes when the query is completed.  
+
+result.data() returns object with the data in the document.
+
+
+        firebasetsFirestore.getDocument(
+        ["usersCollection", "user1", "postCollection", "post1"],
+        (result, err) => {
+                console.log([result.data(), err]);
+        }
+        );  
+
+In the example, it is reading the post1 document from usersCollection > user1 > postCollection.
+
+---
+
