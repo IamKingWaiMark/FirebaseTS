@@ -3,7 +3,7 @@
 ### Implementation
 1. Install firebasets  
 
-        npm i firebase firebasets --save  
+        npm i firebasets  
 
 2. Import FirebaseTSApp at the top of the **app.module.ts** file:  
 
@@ -159,13 +159,15 @@ Check if a user is signed in.
 
 ---
 
-### Reading Data
+### Retreiving Data
 
-#### Getting document data once
+#### Getting data once
 
-#### public getDocument(from: string [], onComplete: (result: firebase.firestore.DocumentSnapshot, error?: any) => void): void;
+---
 
-Reads data from a document once.
+#### public getDocument(from: string [], onComplete: (result: firebase.firestore.DocumentSnapshot, error?: any) => void): void;  
+
+Get document data.
 
 @param from: string [] - Takes in a array of string to specify the path to a document in the firestore database structure (collection, document, collection, document, ...). The length of the array MUST be even.  
 
@@ -184,4 +186,128 @@ result.data() returns a object with the data in the document.
 In the example, it is reading the post1 document from usersCollection > user1 > postCollection.
 
 ---
+
+Get collection data.
+
+#### public getCollection(from: string [], where: Where[] | OrderBy [] | Limit [], onComplete: (result: firebase.firestore.QuerySnapshot, error?: any) => void): void;
+
+@param from: string [] - Takes in a array of string to specify the path to a collection in the firestore database structure (collection, document, collection, document, ...). The length of the array MUST be odd. 
+
+@param where: Where[] | OrderBy [] | Limit [] - In this array, you specify the additional Where, Order, and Limit queries. 
+
+@param onComplete: (result: firebase.firestore.QuerySnapshot, error?: any) => void - Executes when the query is finish.
+
+results - return the list of documents.
+error - returns an error message if the query fails.
+
+        class Where {
+        constructor(where: string, condition: "<=" | "<" | "==" | ">" | ">=", argument: any);
+        }
+
+        class OrderBy {
+        constructor(field: string, direction: "asc" | "desc");
+        }
+
+        class Limit {
+        constructor(limit: number);
+        }
+
+Example:
+
+        firebasetsFirestore.getCollection(
+        ["usersCollection"],
+        [new Where("age", "==", 10), new OrderBy("name", "asc"), new Limit(10), ...],
+        results => {
+                results.forEach(
+                doc=>{
+                console.log(doc.data());
+                }
+                );
+        }
+        );
+
+This example snippet shows how to get documents from the users collection where the user age is 10. The results is then further sorted by their name in ascending order and limitted to 10 results.
+
+If no Where, Order, or Limit query is provided, it will return all the documents in the collection.
+
+---
+
+### Listening to data
+
+#### Listen to a document
+
+#### public listenToDocument(name: string, from: string [], onUpdate: (result: firebase.firestore.DocumentSnapshot) => void): any
+
+Retreive data from a document and listens for changes made to the document. 
+
+@param name: string - The name given to this listener so it can be reference later to stop listening to changes using the **stopListeningTo(listenerName: string): void and stopListeningToAll(): void** methods.
+
+@param from: string [] - Takes in a array of string to specify the path to a document in the firestore database structure (collection, document, collection, document, ...). The length of the array MUST be even.  
+
+@param onUpdate: (result: firebase.firestore.DocumentSnapshot, error?: any) => void - This function executes when the query is completed.  
+
+result.data() returns a object with the data in the document.
+
+        readonly LISTENER_NAME = "POST_LISTENER";
+
+        ..
+
+        firebasetsFirestore.listenToDocument(
+        this.LISTENER_NAME,
+        ["usersCollection", "user1", "postCollection", "post1"],
+        (result, err) => {
+                console.log([result.data(), err]);
+        }
+        );  
+
+---
+
+#### Listen to a collection
+
+#### public listenToCollection(name: string, from: string [], where: Where[] | OrderBy [] | Limit [], onUpdate: (result: firebase.firestore.QuerySnapshot) => void): any;
+
+@param name: string - The name given to this listener so it can be reference later to stop listening to changes using the **stopListeningTo(listenerName: string): void and stopListeningToAll(): void** methods.
+
+@param from: string [] - Takes in a array of string to specify the path to a collection in the firestore database structure (collection, document, collection, document, ...). The length of the array MUST be odd. 
+
+@param where: Where[] | OrderBy [] | Limit [] - In this array, you specify the additional Where, Order, and Limit queries. 
+
+@param onComplete: (result: firebase.firestore.QuerySnapshot, error?: any) => void - Executes when the query is finish.
+
+results - return the list of documents.
+error - returns an error message if the query fails.
+
+        class Where {
+        constructor(where: string, condition: "<=" | "<" | "==" | ">" | ">=", argument: any);
+        }
+
+        class OrderBy {
+        constructor(field: string, direction: "asc" | "desc");
+        }
+
+        class Limit {
+        constructor(limit: number);
+        }
+
+Example:
+        readonly LISTENER_NAME = "USERS";
+
+        ..
+
+        firebasetsFirestore.getCollection(
+        this.LISTENER_NAME,
+        ["usersCollection"],
+        [new Where("age", "==", 10), new OrderBy("name", "asc"), new Limit(10), ...],
+        results => {
+                results.forEach(
+                doc=>{
+                console.log(doc.data());
+                }
+                );
+        }
+        );
+
+
+
+
 
