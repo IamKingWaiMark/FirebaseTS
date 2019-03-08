@@ -167,11 +167,11 @@ Check if a user is signed in.
 
 Reads data from a document once.
 
-@param from: stirng [] - Takes in a array of string to specify the path to a document in the firestore database structure (collection, document, collection, document, ...). The length of the array MUST be even.  
+@param from: string [] - Takes in a array of string to specify the path to a document in the firestore database structure (collection, document, collection, document, ...). The length of the array MUST be even.  
 
 @param onComplete: (result: firebase.firestore.DocumentSnapshot, error?: any) => void - This function executes when the query is completed.  
 
-result.data() returns object with the data in the document.
+result.data() returns a object with the data in the document.
 
 
         firebasetsFirestore.getDocument(
