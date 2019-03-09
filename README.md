@@ -165,23 +165,34 @@ Check if a user is signed in.
 
 ---
 
-#### public getDocument(from: string [], onComplete: (result: firebase.firestore.DocumentSnapshot, error?: any) => void): void;  
+        public getDocument(
+                params: {
+                        from: string [], 
+                        onComplete: (result: firebase.firestore.DocumentSnapshot) => void,
+                        onFail?: (err: any) => void
+                }
+        ): void;
 
-Get document data.
+Get a document data.
 
 @param from: string [] - Takes in a array of string to specify the path to a document in the firestore database structure (collection, document, collection, document, ...). The length of the array MUST be even.  
 
-@param onComplete: (result: firebase.firestore.DocumentSnapshot, error?: any) => void - This function executes when the query is completed.  
-
+@param onComplete: (result: firebase.firestore.DocumentSnapshot) => void - This function executes when the query is completed.  
 result.data() returns a object with the data in the document.
 
+@param onFail?: (err: any) => void - This functions executes when an error occured during the process and returns a error message.
 
         firebasetsFirestore.getDocument(
-        ["usersCollection", "user1", "postCollection", "post1"],
-        (result, err) => {
-                console.log([result.data(), err]);
+        {
+                from: ["usersCollection", "user1", "postCollection", "post1"],
+                onComplete: result => {
+                        console.log(result.data());
+                },
+                onFail: err => {
+
+                }
         }
-        );  
+        );
 
 In the example, it is reading the post1 document from usersCollection > user1 > postCollection.
 
@@ -189,40 +200,41 @@ In the example, it is reading the post1 document from usersCollection > user1 > 
 
 Get collection data.
 
-#### public getCollection(from: string [], where: Where[] | OrderBy [] | Limit [], onComplete: (result: firebase.firestore.QuerySnapshot, error?: any) => void): void;
+        public getCollection(
+                params: {
+                        from: string [], 
+                        where: Where[] | OrderBy [] | Limit [], 
+                        onComplete: (result: firebase.firestore.QuerySnapshot) => void,
+                        onFail?: (err: any) => void
+                }
+        ): void;
 
 @param from: string [] - Takes in a array of string to specify the path to a collection in the firestore database structure (collection, document, collection, document, ...). The length of the array MUST be odd. 
 
 @param where: Where[] | OrderBy [] | Limit [] - In this array, you specify the additional Where, Order, and Limit queries. 
 
-@param onComplete: (result: firebase.firestore.QuerySnapshot, error?: any) => void - Executes when the query is finish.
-
+@param onComplete: (result: firebase.firestore.QuerySnapshot) => void - Executes when the query is finish.
 results - return the list of documents.
-error - returns an error message if the query fails.
 
-        class Where {
-        constructor(where: string, condition: "<=" | "<" | "==" | ">" | ">=", argument: any);
-        }
+@param onFail?: (err: any) => void - his functions executes when an error occured during the process and returns a error message.
 
-        class OrderBy {
-        constructor(field: string, direction: "asc" | "desc");
-        }
-
-        class Limit {
-        constructor(limit: number);
-        }
 
 Example:
 
         firebasetsFirestore.getCollection(
-        ["usersCollection"],
-        [new Where("age", "==", 10), new OrderBy("name", "asc"), new Limit(10), ...],
-        results => {
-                results.forEach(
-                doc=>{
-                console.log(doc.data());
-                }
+        {
+                from: ["usersCollection"],
+                where: [new Where("age", "==", 10), new OrderBy("name", "asc"), new Limit(10), ...],
+                onComplete: result => {
+                        result.forEach(
+                        doc=>{
+                                console.log(doc.data());
+                        }
                 );
+                },
+                onFail: err => {
+                
+                }
         }
         );
 
@@ -230,13 +242,31 @@ This example snippet shows how to get documents from the users collection where 
 
 If no Where, Order, or Limit query is provided, it will return all the documents in the collection.
 
+        class Where {
+                constructor(where: string, condition: "<=" | "<" | "==" | ">" | ">=", argument: any);
+        }
+
+        class OrderBy {
+                constructor(field: string, direction: "asc" | "desc");
+        }
+
+        class Limit {
+                constructor(limit: number);
+        }
+
 ---
 
 ### Listening to data
 
 #### Listen to a document
 
-#### public listenToDocument(name: string, from: string [], onUpdate: (result: firebase.firestore.DocumentSnapshot) => void): any
+        public listenToDocument(
+                params: {
+                        name: string, 
+                        from: string [], 
+                        onUpdate: (result: firebase.firestore.DocumentSnapshot) => void
+                }
+        ): void;
 
 Retreive data from a document and listens for changes made to the document. 
 
@@ -251,20 +281,27 @@ result.data() returns a object with the data in the document.
         readonly LISTENER_NAME = "POST_LISTENER";
 
         ..
-
         firebasetsFirestore.listenToDocument(
-        this.LISTENER_NAME,
-        ["usersCollection", "user1", "postCollection", "post1"],
-        (result, err) => {
-                console.log([result.data(), err]);
-        }
-        );  
+        {
+                name: this.LISTENER_NAME,
+                from:  ["usersCollection", "user1", "postCollection", "post1"]
+                onUpdate: result => {
+                        console.log(result.data());
+                }
+        });
 
 ---
 
 #### Listen to a collection
 
-#### public listenToCollection(name: string, from: string [], where: Where[] | OrderBy [] | Limit [], onUpdate: (result: firebase.firestore.QuerySnapshot) => void): any;
+        public listenToCollection(
+                params: {
+                        name: string, 
+                        from: string [], 
+                        where: Where[] | OrderBy [] | Limit [], 
+                        onUpdate: (result: firebase.firestore.QuerySnapshot) => void
+                }
+        ): void;
 
 @param name: string - The name given to this listener so it can be reference later to stop listening to changes using the **stopListeningTo(listenerName: string): void and stopListeningToAll(): void** methods.
 
@@ -272,38 +309,27 @@ result.data() returns a object with the data in the document.
 
 @param where: Where[] | OrderBy [] | Limit [] - In this array, you specify the additional Where, Order, and Limit queries. 
 
-@param onComplete: (result: firebase.firestore.QuerySnapshot, error?: any) => void - Executes when the query is finish.
-
+@param onUpdate: (result: firebase.firestore.QuerySnapshot) => void - Executes when the query is finish.
 results - return the list of documents.
-error - returns an error message if the query fails.
 
-        class Where {
-        constructor(where: string, condition: "<=" | "<" | "==" | ">" | ">=", argument: any);
-        }
 
-        class OrderBy {
-        constructor(field: string, direction: "asc" | "desc");
-        }
-
-        class Limit {
-        constructor(limit: number);
-        }
-
-Example:
+Example:  
         readonly LISTENER_NAME = "USERS";
 
         ..
 
-        firebasetsFirestore.getCollection(
-        this.LISTENER_NAME,
-        ["usersCollection"],
-        [new Where("age", "==", 10), new OrderBy("name", "asc"), new Limit(10), ...],
-        results => {
-                results.forEach(
-                doc=>{
-                console.log(doc.data());
-                }
+        firebasetsFirestore.listenToCollection(
+        {
+                name: this.LISTENER_NAME,
+                from: ["usersCollection"],
+                where: [new Where("age", "==", 10), new OrderBy("name", "asc"), new Limit(10), ...],
+                onUpdate: result => {
+                        result.forEach(
+                        doc=>{
+                                console.log(doc.data());
+                        }
                 );
+                }
         }
         );
 

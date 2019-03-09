@@ -7,68 +7,137 @@ export class FirebaseTSFirestore {
         this.listeners = new Map();
     }   
     // Adds data to the database.
-    create(from, data, onComplete){
-        if(data == undefined || data == null) throw "Error creating data. Data is null or undefined.";
-        if(this.isCollectionPath(from)) {
-            this.genCollectionReference(from).doc().set(data).then(() => {onComplete(true, "No Error");}).catch(err => {onComplete(false, err);});
-        } else if(this.isDocumentPath(from)){
-            this.genDocumentReference(from).set(data).then(() => {onComplete(true, "No Error");}).catch(err => {onComplete(false, err);});
+    create(params){
+        if(params.data == undefined || params.data == null) throw "Error creating data. Data is null or undefined.";
+        if(this.isCollectionPath(params.from)) {
+            this.genCollectionReference(params.from).doc().set(params.data)
+            .then(
+                () => {
+                    try{
+                        params.onComplete();
+                    } catch (err) {}
+                }).catch(err => {
+                    try{
+                        params.onFail(err);
+                    } catch (err) {}
+                });
+        } else if(this.isDocumentPath(params.from)){
+            this.genDocumentReference(params.from).set(params.data)
+            .then(
+                () => {
+                    try{
+                        params.onComplete();
+                    } catch (err) {}
+                }).catch(err => {
+                    try{
+                        params.onFail(err);
+                    } catch (err) {}
+                });
         }
     }
     // Delete data.
-    delete(from, onComplete){
+    delete(params){
         // Check to see if the path provided leads to a collection.
-        this.checkDocumentPathValidity(from);
-        this.genDocumentReference(from).delete().then(() => {onComplete(true, "No Error");}).catch(err => {onComplete(false, err);});
+        this.checkDocumentPathValidity(params.from);
+        this.genDocumentReference(params.from).delete()
+        .then(
+            () => {
+                try{
+                    params.onComplete();
+                } catch (err) {}
+            }).catch(err => {
+                try{
+                    params.onFail(err);
+                } catch (err) {}
+            });
     }
     // Update a document.
-    update(from, data, onComplete) {
+    update(params) {
         // Check to see if the path provided leads to a collection.
-        this.checkDocumentPathValidity(from);
-        this.genDocumentReference(from).update(data).then(() => {onComplete(true, "No Error");}).catch(err => {onComplete(false, err);});
+        this.checkDocumentPathValidity(params.from);
+        this.genDocumentReference(params.from).update(params.data)
+        .then(
+            () => {
+                try{
+                    params.onComplete();
+                } catch (err) {}
+            }).catch(err => {
+                try{
+                    params.onFail(err);
+                } catch (err) {}
+            });
     }
-     // Get data from a collection once.
-    getDocument(from, onComplete){
-        this.genDocumentReference(from).get().then(results => onComplete(results, "No Error")).catch(err=>{onComplete(null, err)});
-    }   
+
     // Get data from a collection once.
-    getCollection(from, where, onComplete){
-        let cr = this.genCollectionReference(from);
-        if((where != null || where != undefined) && where.length > 0) {
+    getCollection(params){
+        let cr = this.genCollectionReference(params.from);
+        if((params.where != null || params.where != undefined) && params.where.length > 0) {
             let query = undefined;
-            const whereArr = Array(where)[0];
+            const whereArr = Array(params.where)[0];
             for(let i = 0; i < whereArr.length; i++){
                 if(query == undefined) query = whereArr[i].getQuery(cr);
                 else query = whereArr[i].concatQuery(query);
             }
 
-            query.get().then(results => onComplete(results, "No Error")).catch(err=>{onComplete(null, err)});
+            query.get().then(results => { 
+                try{ params.onComplete(results); } catch (err) {}
+            }).catch(err=> {
+                try{ params.onFail(err); } catch (err) {}
+            });
             return;
         } 
-        cr.get().then(results => onComplete(results, "No Error")).catch(err=>{onComplete(null, err)});
+        cr.get().then(results => { 
+            try{ params.onComplete(results); } catch (err) {}
+        }).catch(err=> {
+            try{ params.onFail(err); } catch (err) {}
+        });
         return;
     }
+    // Get data from a collection once.
+    getDocument(params){
+        this.genDocumentReference(params.from).get()
+        .then(results => { 
+            try {params.onComplete(results); } catch (err) {}
+        })
+        .catch(err=> {
+            try{
+                params.onFail(err);
+            } catch (err) {}
+        });
+    }   
     // LISTEN TO DOCUMENT CHANGES
-    listenToDocument(name, from, onUpdate){
-        this.validateListenerName(name);  
-        return this.addListener(name, this.genDocumentReference(from).onSnapshot(results => onUpdate(results)));
+    listenToDocument(params){
+        this.validateListenerName(params.name);  
+        this.addListener(params.name, this.genDocumentReference(params.from).onSnapshot(results => {
+            try{
+                params.onUpdate(results);
+            } catch (err) {}
+        }));
     }
     // LISTEN TO COLLECTION CHANGES
-    listenToCollection(name, from, where, onUpdate){
-        this.validateListenerName(name);
+    listenToCollection(params){
+        this.validateListenerName(params.name);
         // Start listening operations.
-        let cr = this.genCollectionReference(from);
-        if((where != null || where != undefined) && where.length > 0) {
+        let cr = this.genCollectionReference(params.from);
+        if((params.where != null || params.where != undefined) && params.where.length > 0) {
             let query = undefined;
-            const whereArr = Array(where)[0];
+            const whereArr = Array(params.where)[0];
             for(let i = 0; i < whereArr.length; i++){
                 if(query == undefined) query = whereArr[i].getQuery(cr);
                 else query = whereArr[i].concatQuery(query);
             }
 
-            return this.addListener(name, query.onSnapshot(results => onUpdate(results)));
+            this.addListener(params.name, query.onSnapshot(results => {
+                try{
+                    params.onUpdate(results)
+                } catch (err) {}
+            }));
         } 
-        return this.addListener(name, cr.onSnapshot(results => onUpdate(results)));
+        this.addListener(name, cr.onSnapshot(results => {
+            try{
+                params.onUpdate(results)
+            } catch (err) {}
+        }));
     }
     // GENERATE A COLLECTION REFERENCE FROM A PATH.
     genCollectionReference(from){
@@ -140,7 +209,7 @@ export class FirebaseTSFirestore {
     }
     // COLLECTION VALIDATION METHODS //
     checkCollectionPathValidity(from){
-        if(from == null || from == undefined || !this.isCollectionPath(from)) throw "Not a valid path to a collection.";
+        if(from == null || from == undefined || from.length <= 0 || !this.isCollectionPath(from)) throw "Not a valid path to a collection.";
     }
     isCollectionPath(from){
         return Array(from)[0].length % 2 == 1;
@@ -149,7 +218,7 @@ export class FirebaseTSFirestore {
 
     // DOCUMENT VALIDATION METHODS //
     checkDocumentPathValidity(from){
-        if(from == null || from == undefined || !this.isDocumentPath(from)) throw "Not a valid path to a document.";
+        if(from == null || from == undefined || from.length <= 0 || !this.isDocumentPath(from)) throw "Not a valid path to a document.";
     }
     isDocumentPath(from){
         return Array(from)[0].length % 2 == 0;

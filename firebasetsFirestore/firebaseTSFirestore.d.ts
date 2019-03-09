@@ -1,11 +1,49 @@
 export declare class FirebaseTSFirestore {
-    public create<DT>(from: string [], data: DT, onComplete: (success: boolean, error?: any) => void): void;
-    public delete(from: string [], onComplete: (success: boolean, error?: any) => void): void;
-    public update<DT>(from: string [], data: DT, onComplete: (success: boolean, error?: any) => void): void;
-    public getCollection(from: string [], where: Where[] | OrderBy [] | Limit [], onComplete: (result: firebase.firestore.QuerySnapshot, error?: any) => void): void;
-    public getDocument(from: string [], onComplete: (result: firebase.firestore.DocumentSnapshot, error?: any) => void): void;
-    public listenToCollection(name: string, from: string [], where: Where[] | OrderBy [] | Limit [], onUpdate: (result: firebase.firestore.QuerySnapshot) => void): any;
-    public listenToDocument(name: string, from: string [], onUpdate: (result: firebase.firestore.DocumentSnapshot) => void): any
+    public create<DT>(
+        params: {
+            from: string [],
+            data: DT, 
+            onComplete?: () => void,
+            onFail?: (err: any) => void
+        }
+        ): void;
+    public delete(params: {
+        from: string [], 
+        onComplete?: () => void,
+        onFail?: (err: any) => void
+    }): void;
+    public update<DT>(params: {
+        from: string [], 
+        data: DT, 
+        onComplete?: () => void,
+        onFail?: (err: any) => void
+    }): void;
+    public getCollection(params: {
+        from: string [], 
+        where: Where[] | OrderBy [] | Limit [], 
+        onComplete: (result: firebase.firestore.QuerySnapshot) => void,
+        onFail?: (err: any) => void
+    }): void;
+    public getDocument(
+        params: {
+            from: string [], 
+            onComplete: (result: firebase.firestore.DocumentSnapshot) => void,
+            onFail?: (err: any) => void
+        }
+    ): void;
+    public listenToCollection(
+        params: {
+            name: string, 
+            from: string [], 
+            where: Where[] | OrderBy [] | Limit [], 
+            onUpdate: (result: firebase.firestore.QuerySnapshot) => void
+        }
+    ): void;
+    public listenToDocument(params: {
+        name: string, 
+        from: string [], 
+        onUpdate: (result: firebase.firestore.DocumentSnapshot) => void
+    }): void
     public stopListeningTo(listenerName: string): void;
     public stopListeningToAll(): void;
 }

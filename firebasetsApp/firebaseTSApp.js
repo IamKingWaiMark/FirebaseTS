@@ -13,4 +13,8 @@ export class FirebaseTSApp {
     static getAuth(){
         return firebaseTSApp.auth();
     }
+
+    static getStorage(){
+        return firebaseTSApp.storage();
+    }
 }
