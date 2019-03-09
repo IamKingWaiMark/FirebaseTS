@@ -5,23 +5,43 @@ export class FirebaseTSAuth {
     constructor(){
         this.auth = FirebaseTSApp.getAuth();
     }
-    createAccountWith(email, password, onComplete){
+    createAccountWith(params){
         this.auth.createUserWithEmailAndPassword(
-            email,
-            password
-        ).then(userCredentials => onComplete(userCredentials, "No Error")).catch((error) => onComplete(undefined, error));
+            params.email,
+            params.password
+        ).then(userCredentials => {
+            try{
+                params.onComplete(userCredentials);
+            } catch (err) {}
+        }).catch((error) => {
+            try{
+                params.onFail(error);
+            } catch (err) {}    
+        });
     }
 
-    signInWith(email, password, onComplete){
+    signInWith(params){
         this.auth.signInWithEmailAndPassword(
-            email,
-            password
-        ).then(userCredentials => onComplete(userCredentials, "No Error")).catch((error) => onComplete(undefined, error));
+            params.email,
+            params.password
+        ).then(userCredentials => {
+            try{
+                params.onComplete(userCredentials);
+            } catch (err) {}
+        }).catch((error) => {
+            try{
+                params.onFail(error);
+            } catch (err) {}    
+        });
     }
 
-    signOut(onComplete){
-        if(onComplete)
-            this.auth.signOut().then(() => onComplete(true)).catch(() => onComplete(true));
+    signOut(params){
+        if(params)
+            this.auth.signOut().then(() => {
+                params.onComplete();
+            }).catch(() => { 
+                params.onFail();
+            });
          else 
             this.auth.signOut();              
     }

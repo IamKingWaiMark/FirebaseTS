@@ -64,37 +64,62 @@
 
 **Create User Account**
 
-#### createAccountWith(email: string, password: string, onComplete: (userCredentials: firebase.auth.UserCredential, error?: any) => void): void;  
+        public createAccountWith(
+                params: {
+                        email: string, 
+                        password: string, 
+                        onComplete?: (userCredentials: firebase.auth.UserCredential) => void,
+                        onFail?: (error: any) => void
+        }): void;
 
 Creates a user account.
 
         firebasetsAuthService.createAccountWith(
-        "myEmail@MyEmail963.123.456",   // Email
-        "myPassword",                   // Password
-        (userCredentials, error) => { 
-            //... This code will execute when the user is created.  
+        {
+                email: "myEmail@MyEmail963.123.456",   // Email
+                password: "myPassword",                   // Password
+                onComplete: (userCredentials) => { 
+                        //.. This code will execute when the user is created.  
+                },
+                onFail: (err) => {
+                        //.. This code will execute when an error occurs.
+                }
         }
         );
 
 ---  
 **Sign in with user account**
 
-#### signInWith(email: string, password: string, onComplete: (userCredentials: firebase.auth.UserCredential, error?: any) => void): void;
+    public signInWith(
+                params: {
+                        email: string, 
+                        password: string, 
+                        onComplete?: (userCredentials: firebase.auth.UserCredential) => void,
+                        onFail?: (error: any) => void
+    }): void;
 
 Sign in with a user account.
 
         firebasetsAuthService.signInWith(      
-            "myEmail@MyEmail963.123.456",   // Email
-            "myPassword",                   // Password
-            (credentials, error) => {
-                //... This code will execute when it finish attempt to sign in.  
-            });
+        {
+                email: "myEmail@MyEmail963.123.456",   // Email
+                password: "myPassword",                   // Password
+                onComplete: (credentials) => {
+                        //... This code will execute when it finish attempt to sign in.  
+                },
+                onFail: (err) => {
+                        //.. This code will execute when an error occurs.
+                }
+        }
         });
 
 ---  
 **Sign out**  
 
-#### signOut(onComplete?: (success: boolean) => void): void;
+        public signOut(params?: {
+                onComplete?: () => void,
+                onFail?: (error: any) => void
+        }): void;
 
 Sign out.  
 
@@ -104,16 +129,21 @@ Sign out.
 
 **Send instructional password reset email**  
 
-#### sendPasswordResetEmail(email: string, onComplete?: (error?: string) => void): void;  
+        public sendPasswordResetEmail(params: {
+                email: string, 
+                onComplete?: (error?: string) => void
+        }): void;
 
 Sends a instructional email to reset the password to a specified email address in the database authentication system.    
 
         firebasetsAuthService.sendPasswordResetEmail(
-            "myEmail@MyEmail963.123.456",
-            err => {
-                // ... This code will execute when it finish attempt to send an instructional email.
-                // It may or may not return an error. 
-            }
+        {
+                email: "myEmail@MyEmail963.123.456",
+                onComplete: err => {
+                        // ... This code will execute when it finish attempt to send an instructional email.
+                        // It may or may not return an error. 
+                }
+        }
         );
 
 ---  
