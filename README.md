@@ -173,7 +173,7 @@ Check if a user is signed in.
                 }
         ): void;
 
-Get a document data.
+#### Get a document data.
 
 @param from: string [] - Takes in a array of string to specify the path to a document in the firestore database structure (collection, document, collection, document, ...). The length of the array MUST be even.  
 
@@ -181,6 +181,8 @@ Get a document data.
 result.data() returns a object with the data in the document.
 
 @param onFail?: (err: any) => void - This functions executes when an error occured during the process and returns a error message.
+
+**Example:**  
 
         firebasetsFirestore.getDocument(
         {
@@ -198,7 +200,7 @@ In the example, it is reading the post1 document from usersCollection > user1 > 
 
 ---
 
-Get collection data.
+#### Get collection data.
 
         public getCollection(
                 params: {
@@ -219,7 +221,7 @@ results - return the list of documents.
 @param onFail?: (err: any) => void - his functions executes when an error occured during the process and returns a error message.
 
 
-Example:
+**Example:**  
 
         firebasetsFirestore.getCollection(
         {
@@ -278,6 +280,8 @@ Retreive data from a document and listens for changes made to the document.
 
 result.data() returns a object with the data in the document.
 
+**Example:**  
+
         readonly LISTENER_NAME = "POST_LISTENER";
 
         ..
@@ -313,7 +317,8 @@ result.data() returns a object with the data in the document.
 results - return the list of documents.
 
 
-Example:  
+**Example:**   
+
         readonly LISTENER_NAME = "USERS";
 
         ..
