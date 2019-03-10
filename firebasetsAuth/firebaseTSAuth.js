@@ -17,7 +17,7 @@ export class FirebaseTSAuth {
                         params.onComplete(userCredentials);
                     } catch (err) {}
                 }).catch((error) => {
-                    rejected(err);
+                    rejected(error);
                     try{
                         params.onFail(error);
                     } catch (err) {}    
