@@ -3,34 +3,39 @@ export declare class FirebaseTSFirestore {
         params: {
             from: string [],
             data: DT, 
-            onComplete?: () => void,
+            onComplete?: (docId: string) => void,
             onFail?: (err: any) => void
         }
-        ): void;
+        ): Promise<string>;
+
     public delete(params: {
         from: string [], 
         onComplete?: () => void,
         onFail?: (err: any) => void
-    }): void;
+    }): Promise<void>;
+
     public update<DT>(params: {
         from: string [], 
         data: DT, 
-        onComplete?: () => void,
+        onComplete?: (docRef: firebase.firestore.DocumentReference) => void,
         onFail?: (err: any) => void
-    }): void;
+    }): Promise<firebase.firestore.DocumentReference>;
+
     public getCollection(params: {
         from: string [], 
         where: Where[] | OrderBy [] | Limit [], 
-        onComplete: (result: firebase.firestore.QuerySnapshot) => void,
+        onComplete?: (result: firebase.firestore.QuerySnapshot) => void,
         onFail?: (err: any) => void
-    }): void;
+    }): Promise<firebase.firestore.QuerySnapshot>;
+
     public getDocument(
         params: {
             from: string [], 
-            onComplete: (result: firebase.firestore.DocumentSnapshot) => void,
+            onComplete?: (result: firebase.firestore.DocumentSnapshot) => void,
             onFail?: (err: any) => void
         }
-    ): void;
+    ): Promise<firebase.firestore.DocumentSnapshot>;
+
     public listenToCollection(
         params: {
             name: string, 
@@ -39,11 +44,13 @@ export declare class FirebaseTSFirestore {
             onUpdate: (result: firebase.firestore.QuerySnapshot) => void
         }
     ): void;
+
     public listenToDocument(params: {
         name: string, 
         from: string [], 
         onUpdate: (result: firebase.firestore.DocumentSnapshot) => void
     }): void
+    
     public stopListeningTo(listenerName: string): void;
     public stopListeningToAll(): void;
 }

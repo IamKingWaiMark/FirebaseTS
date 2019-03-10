@@ -8,102 +8,136 @@ export class FirebaseTSFirestore {
     }   
     // Adds data to the database.
     create(params){
-        if(params.data == undefined || params.data == null) throw "Error creating data. Data is null or undefined.";
-        if(this.isCollectionPath(params.from)) {
-            this.genCollectionReference(params.from).doc().set(params.data)
-            .then(
-                () => {
-                    try{
-                        params.onComplete();
-                    } catch (err) {}
-                }).catch(err => {
-                    try{
-                        params.onFail(err);
-                    } catch (err) {}
-                });
-        } else if(this.isDocumentPath(params.from)){
-            this.genDocumentReference(params.from).set(params.data)
-            .then(
-                () => {
-                    try{
-                        params.onComplete();
-                    } catch (err) {}
-                }).catch(err => {
-                    try{
-                        params.onFail(err);
-                    } catch (err) {}
-                });
-        }
+        return new Promise(
+            (resolved, rejected) => {
+                if(params.data == undefined || params.data == null) throw new Error("Error creating data. Data is null or undefined.");
+                if(this.isCollectionPath(params.from)) {
+                    let docRef = this.genCollectionReference(params.from).doc();
+                    docRef.set(params.data)
+                    .then(
+                        () => {
+                            try{
+                                resolved(docRef.id);
+                                params.onComplete(docRef.id);
+                            } catch (err) {}
+                        }).catch(err => {
+                            rejected(err);
+                            try{
+                                params.onFail(err);
+                            } catch (err) {}
+                        });
+                } else if(this.isDocumentPath(params.from)){
+                    let docRef = this.genDocumentReference(params.from);
+                    docRef.set(params.data)
+                    .then(
+                        () => {
+                            resolved(docRef.id);
+                            try{
+                                params.onComplete(docRef.id);
+                            } catch (err) {}
+                        }).catch(err => {
+                            rejected(err);
+                            try{
+                                params.onFail(err);
+                            } catch (err) {}
+                        });
+                }
+            }
+        )
     }
     // Delete data.
     delete(params){
-        // Check to see if the path provided leads to a collection.
-        this.checkDocumentPathValidity(params.from);
-        this.genDocumentReference(params.from).delete()
-        .then(
-            () => {
-                try{
-                    params.onComplete();
-                } catch (err) {}
-            }).catch(err => {
-                try{
-                    params.onFail(err);
-                } catch (err) {}
-            });
+        return new Promise(
+            (resolved, rejected) => {
+                // Check to see if the path provided leads to a collection.
+                this.checkDocumentPathValidity(params.from);
+                this.genDocumentReference(params.from).delete()
+                .then(
+                    () => {
+                        resolved();
+                        try{
+                            params.onComplete();
+                        } catch (err) {}
+                    }).catch(err => {
+                        rejected(err);
+                        try{
+                            params.onFail(err);
+                        } catch (err) {}
+                    });
+            }
+        );
     }
     // Update a document.
     update(params) {
-        // Check to see if the path provided leads to a collection.
-        this.checkDocumentPathValidity(params.from);
-        this.genDocumentReference(params.from).update(params.data)
-        .then(
-            () => {
-                try{
-                    params.onComplete();
-                } catch (err) {}
-            }).catch(err => {
-                try{
-                    params.onFail(err);
-                } catch (err) {}
-            });
+        return new Promise(
+            (resolved, rejected) => {
+                // Check to see if the path provided leads to a collection.
+                this.checkDocumentPathValidity(params.from);
+                const docRef = this.genDocumentReference(params.from);
+                docRef.update(params.data)
+                .then(
+                    () => {
+                        resolved(docRef);
+                        try{
+                            params.onComplete(docRef);
+                        } catch (err) {}
+                    }).catch(err => {
+                        rejected(err);
+                        try{
+                            params.onFail(err);
+                        } catch (err) {}
+                    });
+                }
+        );
     }
 
     // Get data from a collection once.
     getCollection(params){
         let cr = this.genCollectionReference(params.from);
         if((params.where != null || params.where != undefined) && params.where.length > 0) {
-            let query = undefined;
-            const whereArr = Array(params.where)[0];
-            for(let i = 0; i < whereArr.length; i++){
-                if(query == undefined) query = whereArr[i].getQuery(cr);
-                else query = whereArr[i].concatQuery(query);
-            }
-
-            query.get().then(results => { 
-                try{ params.onComplete(results); } catch (err) {}
-            }).catch(err=> {
-                try{ params.onFail(err); } catch (err) {}
+            return new Promise((resolved, rejected) => {
+                let query = undefined;
+                const whereArr = Array(params.where)[0];
+                for(let i = 0; i < whereArr.length; i++){
+                    if(query == undefined) query = whereArr[i].getQuery(cr);
+                    else query = whereArr[i].concatQuery(query);
+                }
+                query.get().then(results => { 
+                    resolved(results);
+                    try{ params.onComplete(results); } catch (err) {}
+                }).catch(err=> {
+                    rejected(err);
+                    try{ params.onFail(err); } catch (err) {}
+                });
             });
-            return;
-        } 
-        cr.get().then(results => { 
-            try{ params.onComplete(results); } catch (err) {}
-        }).catch(err=> {
-            try{ params.onFail(err); } catch (err) {}
-        });
-        return;
+        } else {
+            return new Promise((resolved, rejected) => {
+                cr.get().then(results => { 
+                    resolved(results);
+                    try{ params.onComplete(results); } catch (err) {}
+                }).catch(err=> {
+                    rejected(err);
+                    try{ params.onFail(err); } catch (err) {}
+                });
+            });
+        }
     }
     // Get data from a collection once.
     getDocument(params){
-        this.genDocumentReference(params.from).get()
-        .then(results => { 
-            try {params.onComplete(results); } catch (err) {}
-        })
-        .catch(err=> {
-            try{
-                params.onFail(err);
-            } catch (err) {}
+        return new Promise((resolve, reject) => {
+            this.genDocumentReference(params.from).get()
+            .then(results => { 
+                resolve(results);     
+                try { params.onComplete(results); } catch (err) {}
+            })
+            .catch(err=> {
+                reject(err);
+                try{
+                    params.onFail(err);
+                } catch (err) {}
+            });
         });
+        
     }   
     // LISTEN TO DOCUMENT CHANGES
     listenToDocument(params){

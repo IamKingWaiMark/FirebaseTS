@@ -6,44 +6,62 @@ export class FirebaseTSAuth {
         this.auth = FirebaseTSApp.getAuth();
     }
     createAccountWith(params){
-        this.auth.createUserWithEmailAndPassword(
-            params.email,
-            params.password
-        ).then(userCredentials => {
-            try{
-                params.onComplete(userCredentials);
-            } catch (err) {}
-        }).catch((error) => {
-            try{
-                params.onFail(error);
-            } catch (err) {}    
-        });
+        return new Promise(
+            (resolved, rejected) => {
+                this.auth.createUserWithEmailAndPassword(
+                    params.email,
+                    params.password
+                ).then(userCredentials => {
+                    resolved(userCredentials);
+                    try{
+                        params.onComplete(userCredentials);
+                    } catch (err) {}
+                }).catch((error) => {
+                    rejected(err);
+                    try{
+                        params.onFail(error);
+                    } catch (err) {}    
+                });
+            }
+        );
     }
 
     signInWith(params){
-        this.auth.signInWithEmailAndPassword(
-            params.email,
-            params.password
-        ).then(userCredentials => {
-            try{
-                params.onComplete(userCredentials);
-            } catch (err) {}
-        }).catch((error) => {
-            try{
-                params.onFail(error);
-            } catch (err) {}    
-        });
+        return new Promise(
+            (resolved, rejected) => {
+                this.auth.signInWithEmailAndPassword(
+                    params.email,
+                    params.password
+                ).then(userCredentials => {
+                    resolved(userCredentials);
+                    try{
+                        params.onComplete(userCredentials);
+                    } catch (err) {}
+                }).catch((error) => {
+                    rejected(error);
+                    try{
+                        params.onFail(error);
+                    } catch (err) {}    
+                });
+            }
+        );
     }
 
     signOut(params){
-        if(params)
-            this.auth.signOut().then(() => {
-                params.onComplete();
-            }).catch(() => { 
-                params.onFail();
-            });
-         else 
-            this.auth.signOut();              
+        return new Promise(
+            (resolved, rejected) => {
+                if(params)
+                this.auth.signOut().then(() => {
+                    resolved();
+                    try{ params.onComplete(); } catch (err) {}      
+                }).catch(() => { 
+                    rejected();
+                    try{ params.onFail(); } catch (err) {}  
+                });
+             else 
+                this.auth.signOut(); 
+            }
+        );             
     }
 
     listenToLoginStateChanges(onChange){

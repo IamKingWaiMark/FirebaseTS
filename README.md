@@ -64,13 +64,12 @@
 
 **Create User Account**
 
-        public createAccountWith(
-                params: {
-                        email: string, 
-                        password: string, 
-                        onComplete?: (userCredentials: firebase.auth.UserCredential) => void,
-                        onFail?: (error: any) => void
-        }): void;
+        public createAccountWith(params: {
+                email: string, 
+                password: string, 
+                onComplete?: (userCredentials: firebase.auth.UserCredential) => void,
+                onFail?: (error: any) => void
+        }): Promise<firebase.auth.UserCredential>;
 
 Creates a user account.
 
@@ -90,13 +89,12 @@ Creates a user account.
 ---  
 **Sign in with user account**
 
-    public signInWith(
-                params: {
-                        email: string, 
-                        password: string, 
-                        onComplete?: (userCredentials: firebase.auth.UserCredential) => void,
-                        onFail?: (error: any) => void
-    }): void;
+        public signInWith(params: {
+                email: string, 
+                password: string, 
+                onComplete?: (userCredentials: firebase.auth.UserCredential) => void,
+                onFail?: (error: any) => void
+        }): Promise<firebase.auth.UserCredential>;
 
 Sign in with a user account.
 
@@ -119,7 +117,7 @@ Sign in with a user account.
         public signOut(params?: {
                 onComplete?: () => void,
                 onFail?: (error: any) => void
-        }): void;
+        }): Promise<void>;
 
 Sign out.  
 
