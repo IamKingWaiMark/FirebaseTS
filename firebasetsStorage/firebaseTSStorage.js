@@ -8,8 +8,9 @@ export class FirebaseTSStorage {
     // Add data to the storage.
     upload(params){
         let uploadTask = null;
+        let storageRef = this.genStorageRef(params.path);
         uploadTask = (params.data.metadata == null || params.data.metadata == undefined)?  
-            this.genStorageRef(params.path).put(params.data.data) : this.genStorageRef(params.path).put(params.data.data, params.data.metadata);
+            storageRef.put(params.data.data) : storageRef.put(params.data.data, params.data.metadata);
 
         uploadTask.on(
             "state_changed",
@@ -24,9 +25,13 @@ export class FirebaseTSStorage {
                 } catch (err) {}
             },
             ()=>{
-                try{
-                    params.onComplete();
-                } catch (err) {}
+                storageRef.getDownloadURL().then(
+                    downloadUrl => {
+                        try{
+                            params.onComplete(downloadUrl);
+                        } catch (err) {}
+                    }
+                );
             }
         );
 
