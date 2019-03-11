@@ -25,7 +25,27 @@ export class FirebaseTSAuth {
             }
         );
     }
-
+    signInAnonymously(params){
+        return new Promise(
+            (resolved, rejected) => {
+                this.auth.signInAnonymously()
+                .then(
+                    result => {
+                        resolved(result);
+                        try{
+                            params.onComplete(result);
+                        } catch (err) {}
+                    }
+                ).catch(err => {
+                    rejected(err);
+                    try{
+                        params.onFail(err);
+                    } catch (err) {}
+                });
+            }
+        )
+    }
+    
     signInWith(params){
         return new Promise(
             (resolved, rejected) => {
@@ -55,7 +75,7 @@ export class FirebaseTSAuth {
                     resolved();
                     try{ params.onComplete(); } catch (err) {}      
                 }).catch(() => { 
-                    rejected();
+                    rejected(new Error("Failed to signout."));
                     try{ params.onFail(); } catch (err) {}  
                 });
              else 
@@ -91,7 +111,7 @@ export class FirebaseTSAuth {
         try{
             this.validateIsLoggedIn();
             return this.auth.currentUser.emailVerified;
-        } catch (err) { console.error(`${err} User must be logged in to use the isEmailVerified() function.`);}
+        } catch (err) { console.error(`User must be logged in to use the isEmailVerified() function. \n${err}`);}
         return false;
     }
 
@@ -101,7 +121,7 @@ export class FirebaseTSAuth {
     }
 
     validateIsLoggedIn(){
-        if(!this.isLoggedIn()) throw "No user was logged in.";
+        if(!this.isLoggedIn()) throw new Error("No user was logged in.");
     }
     getAuth(){
         return this.auth;

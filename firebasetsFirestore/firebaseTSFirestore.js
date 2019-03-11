@@ -16,8 +16,8 @@ export class FirebaseTSFirestore {
                     docRef.set(params.data)
                     .then(
                         () => {
-                            try{
-                                resolved(docRef.id);
+                            resolved(docRef.id);
+                            try{                       
                                 params.onComplete(docRef.id);
                             } catch (err) {}
                         }).catch(err => {
@@ -124,14 +124,14 @@ export class FirebaseTSFirestore {
     }
     // Get data from a collection once.
     getDocument(params){
-        return new Promise((resolve, reject) => {
+        return new Promise((resolved, rejected) => {
             this.genDocumentReference(params.from).get()
             .then(results => { 
-                resolve(results);     
+                resolved(results);     
                 try { params.onComplete(results); } catch (err) {}
             })
             .catch(err=> {
-                reject(err);
+                rejected(err);
                 try{
                     params.onFail(err);
                 } catch (err) {}
