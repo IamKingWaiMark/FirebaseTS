@@ -1,4 +1,13 @@
 export declare class FirebaseTSFirestore {
+
+    public all(
+        params: {
+            operations: BatchOperation<any>[],
+            onComplete?: () => void,
+            onFail?: (err: any) => void
+        }
+    ): Promise<void>;
+
     public create<DT>(
         params: {
             from: string [],
@@ -66,4 +75,10 @@ export declare class OrderBy {
 
 export declare class Limit {
     constructor(limit: number);
+}
+
+export declare class BatchOperation <DT>{
+    constructor(operation: "create" | "update", from: string[], data: DT);
+    constructor(operation: "delete", from: string[]);
+    getOperation(batch: firebase.firestore.WriteBatch): firebase.firestore.WriteBatch;
 }

@@ -6,6 +6,27 @@ export class FirebaseTSFirestore {
     constructor(){
         this.listeners = new Map();
     }   
+    all(params){
+        const batch = FirebaseTSApp.getFirestore().batch();
+        for(let bo of params.operations){
+            bo.getOperation(batch);
+        }
+        return new Promise(
+            (resolved, rejected) => {
+                batch.commit().then(()=>{
+                    try{
+                        params.onComplete();
+                    } catch (err) {}
+                    resolved();
+                }).catch(err=>{
+                    try{
+                        params.onFail(err);
+                    } catch (error) {}
+                    rejected(err);
+                });
+            }
+        );
+    }
     // Adds data to the database.
     create(params){
         return new Promise(
@@ -305,4 +326,81 @@ export class Limit {
     concatQuery(query){
         return query.limit(this.limit);
     }
+}
+
+export class BatchOperation {
+
+    constructor(operation, from, data){
+        this.operation = operation;
+        this.from = from;
+        this.data = data;
+
+    }
+    getOperation(batch){
+        switch(this.operation){
+            case "create":
+                return batch.set(this.genCollectionReference(this.from).doc(), this.data);
+            case "update":
+                return batch.update(this.genDocumentReference(this.from), this.data);
+            case "delete":
+                return batch.delete(this.genDocumentReference(this.from));
+        }
+    }
+    // COLLECTION VALIDATION METHODS //
+    checkCollectionPathValidity(from){
+        if(from == null || from == undefined || from.length <= 0 || !this.isCollectionPath(from)) throw "Not a valid path to a collection.";
+    }
+    isCollectionPath(from){
+        return Array(from)[0].length % 2 == 1;
+    }
+    // GENERATE A COLLECTION REFERENCE FROM A PATH.
+    genCollectionReference(from){
+        // Check to see if the path provided leads to a collection.
+        this.checkCollectionPathValidity(from);
+
+        const fromArr = Array(from)[0];
+        let cr = undefined;
+        let dr = undefined;
+        for(let i = 0; i < fromArr.length; i++){
+            if(i % 2 == 0){
+                if(cr == undefined){
+                    cr = FirebaseTSApp.getFirestore().collection(fromArr[i]);
+                } else {
+                    cr = dr.collection(fromArr[i]);
+                }
+            } else {
+                dr = cr.doc(fromArr[i]);
+            }
+        }
+        return cr;
+    }
+    isDocumentPath(from){
+        return Array(from)[0].length % 2 == 0;
+    }
+    // DOCUMENT VALIDATION METHODS //
+    checkDocumentPathValidity(from){
+        if(from == null || from == undefined || from.length <= 0 || !this.isDocumentPath(from)) throw "Not a valid path to a document.";
+    }
+    // GENERATE A DOCUMENT REFERENCE FROM A PATH.
+    genDocumentReference(from){
+        // Check to see if the path provided leads to a collection.
+        this.checkDocumentPathValidity(from);
+    
+        const fromArr = Array(from)[0];
+        let cr = undefined;
+        let dr = undefined;
+        for(let i = 0; i < fromArr.length; i++){
+            if(i % 2 == 0){
+                if(cr == undefined){
+                    cr = FirebaseTSApp.getFirestore().collection(fromArr[i]);
+                } else {
+                    cr = dr.collection(fromArr[i]);
+                }
+            } else {
+                dr = cr.doc(fromArr[i]);
+            }
+        }
+        return dr;
+    }
+    
 }
