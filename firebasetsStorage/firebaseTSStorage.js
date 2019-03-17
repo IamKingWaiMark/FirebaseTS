@@ -93,7 +93,7 @@ export class FirebaseTSStorage {
     delete(params){
         return new Promise(
             (resolved, rejected) => {
-                const storageRef = this.genStorageRef(path);
+                const storageRef = this.genStorageRef(params.path);
                 storageRef.delete().then(
                     ()=>{
                         resolved();

@@ -367,7 +367,129 @@ results - return the list of documents.
         }
         );
 
+## Storage Service
 
+### Implementation
 
+1. Import FirebaseTSStorage  
 
+        import { FirebaseTSStorage } from 'firebasets/firebasetsStorage/firebaseTSStorage';  
 
+2. Create a FirebaseTSStorage object.
+
+        const firebasetsStorage = new FirebaseTSFirestore();
+
+---
+
+### Get Download URL from the Storage
+
+        public getDownloadUrl(
+                params: { 
+                        path: string [], 
+                        onComplete?: (url: string) => void, 
+                        onFail?: (err: any) => void
+                        }
+        ): Promise<string>;
+
+**Example:**  
+
+        firebasetsStorage.getDownloadUrl(
+        {
+                path: ["myFiles", "Card Template.pub"]
+        }
+        ).then(url => {
+                console.log(url);
+        });
+
+---
+
+### Download File to Local Storage
+
+        public downloadToLocalStorage(url: string): Promise<void>;
+        public downloadToLocalStorage(path: string []): Promise<void>;
+
+**Example with Download URL:**  
+
+        firebasetsStorage.getDownloadUrl(
+        {
+                path: ["myFiles", "Card Template.pub"]
+        }
+        ).then(url => {
+                firebasetsStorage.downloadToLocalStorage(url);
+        });
+
+**Example with Path:** 
+
+        firebasetsStorage.downloadToLocalStorage(
+                ["myFiles", "Card Template.pub"]
+        );
+
+### Delete File
+
+        public deleteWithUrl(
+                params: {
+                        url: string, 
+                        onComplete?: () => void, 
+                        onFail?: (err: any) => void
+                        }
+        ): Promise<void>;
+
+        public delete(
+                params: {
+                        path: string [], 
+                        onComplete?: () => void, 
+                        onFail?: (err: any) => void
+                        }
+        ): Promise<void>;
+
+**Example with Download URL:**  
+
+        firebasetsStorage.getDownloadUrl(
+        {
+                path: ["myFiles", "Card Template.pub"]
+        }
+        ).then(url => {
+                firebasetsStorage.deleteWithUrl(
+                        {
+                        url: url
+                        }
+                );
+        });
+
+**Example with Path:**  
+
+        firebasetsStorage.delete(
+        {
+                path: ["myFiles", "Card Template.pub"]
+        }
+        ).then(() => { 
+                console.log("Deleted"); 
+        });
+
+### Upload File  
+
+        public upload(
+                params: 
+                { 
+                        uploadName: string, 
+                        path: string [], 
+                        data: {data: any, metadata?: firebase.storage.UploadMetadata}, 
+                        onUpload?: (snapshot?: firebase.storage.UploadTaskSnapshot) => void, onComplete?: (downloadUrl: string) => void, 
+                        onFail?: (err: any) => void
+                }
+        ): Promise<string>;
+
+**Example:**  
+
+        firebasetsStorage.upload(
+        {
+                uploadName: "Image upload",
+                path: [input.files[0].name],
+                data: {data: input.files[0]},
+                onUpload: snapshot => {
+                        console.log((snapshot.bytesTransferred / snapshot.totalBytes) * 100.0);
+                }
+        }
+        ).then(downloadUrl => {
+                // Do something with URL
+        });

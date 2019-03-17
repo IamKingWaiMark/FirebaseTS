@@ -4,6 +4,6 @@ export declare class FirebaseTSStorage {
     public delete(params: {path: string [], onComplete?: () => void, onFail?: (err: any) => void}): Promise<void>;
     public downloadToLocalStorage(url: string): Promise<void>;
     public downloadToLocalStorage(path: string []): Promise<void>;
-    public getDownloadUrl(params: { path: string [], onComplete?: (url: string) => void, onFail?: (err: any) => void}): Promise<void>;
+    public getDownloadUrl(params: { path: string [], onComplete?: (url: string) => void, onFail?: (err: any) => void}): Promise<string>;
     
 }
