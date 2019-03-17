@@ -5,6 +5,31 @@ export class FirebaseTSStorage {
     constructor(){
         this.listeners = new Map();
     }
+    // Download file to a local storage location.
+    downloadToLocalStorage(path){
+        return new Promise(
+            (resolved, rejected) => {
+                if(path instanceof Array){
+                    this.getDownloadUrl({
+                        path: path,
+                        onComplete: url => {
+                            resolved(url);
+                            window.open(url, "Download");
+                        },
+                        onFail: err => {
+                            rejected(err);
+                        }
+                    });
+                } else {
+                    try{
+                        window.open(path, "Download");
+                        resolved();
+                    } catch (err) { rejected(err); }
+                }
+
+            }
+        );
+    }
     // Add data to the storage.
     upload(params){
         return new Promise(
@@ -81,6 +106,29 @@ export class FirebaseTSStorage {
                             params.onFail(err);
                         } catch (err) {}
                     });
+            }
+        );
+    }
+    // Get the download URL
+    getDownloadUrl(params){
+        return new Promise(
+            (resolved, rejected) => {
+                const storageRef = this.genStorageRef(params.path);
+                try{
+                    storageRef.getDownloadURL().then(
+                        url => {
+                            resolved(url);
+                            try{
+                                params.onComplete(url);
+                            } catch (err) {}
+                        }
+                    );
+                } catch (err) {
+                    rejected(err);
+                    try{
+                        params.onFail(err);
+                    } catch (err) {}
+                }
             }
         );
     }
