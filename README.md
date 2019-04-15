@@ -1,1 +1,1 @@
-[I'm an inline-style link](https://www.google.com)
+[Click to go to the FirebaseTS Documentation](https://myfbts.firebaseapp.com/)
