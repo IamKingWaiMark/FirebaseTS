@@ -100,11 +100,12 @@ export class FirebaseTSAuth {
         } catch (err) { console.error(`${err} User must be logged in to use the sendVerificaitonEmail() function.`);}
     }
 
-    sendPasswordResetEmail(email, onComplete){
-        if(onComplete)
-            this.auth.sendPasswordResetEmail(email)
-            .then(() => onComplete(`Instructions to reset password was sent to ${email}.`)).catch(()=>onComplete("Failed to send password reset email."));
-        else this.auth.sendPasswordResetEmail(email);
+    sendPasswordResetEmail(params){
+        if(params.onComplete)
+        this.auth.sendPasswordResetEmail(params.email)
+        .then(() => params.onComplete(`Instructions to reset password was sent to ${params.email}.`))
+        .catch(()=> params.onComplete("Failed to send password reset email."));
+    else this.auth.sendPasswordResetEmail(params.email);
     }
 
     isEmailVerified(){

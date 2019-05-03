@@ -17,4 +17,8 @@ export class FirebaseTSApp {
     static getStorage(){
         return firebaseTSApp.storage();
     }
+
+    static getFirestoreTimestamp(){
+        return firebaseTSApp.firestore.Timestamp.now();
+    }
 }
