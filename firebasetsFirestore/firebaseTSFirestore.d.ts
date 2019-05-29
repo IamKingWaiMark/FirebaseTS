@@ -66,7 +66,7 @@ export declare class FirebaseTSFirestore {
 
 
 export declare class Where {
-    constructor(where: string, condition: "<=" | "<" | "==" | ">" | ">=", argument: any);
+    constructor(where: string, condition: "<=" | "<" | "==" | ">" | ">=" | "array-contains  ", argument: any);
 }
 
 export declare class OrderBy {
