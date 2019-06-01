@@ -7,7 +7,7 @@ export class FirebaseTSFirestore {
         this.listeners = new Map();
     }   
     appendArray(data){
-        return firestore.FieldValue.arrayUnion(data);
+        return firebase.firestore.FieldValue.arrayUnion(data);
     }
     all(params){
         const batch = FirebaseTSApp.getFirestore().batch();
