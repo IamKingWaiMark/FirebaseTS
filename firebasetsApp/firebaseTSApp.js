@@ -9,7 +9,9 @@ export class FirebaseTSApp {
     static getFirestore(){
         return firebaseTSApp.firestore();
     }
-
+    static _getFirestore(){
+        return firebaseTSApp.firestore;
+    }
     static getAuth(){
         return firebaseTSApp.auth();
     }

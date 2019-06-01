@@ -10,6 +10,7 @@ export declare class FirebaseTSApp {
         messagingSenderId: string
     }): any[];
     static getFirestore(): firestore.Firestore;
+    static _getFirestore(): any;
     static getAuth(): auth.Auth;
     static getStorage(): storage.Storage;
     static getFirestoreTimestamp(): firebase.firestore.Timestamp;
