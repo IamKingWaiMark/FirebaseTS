@@ -13,5 +13,5 @@ export declare class FirebaseTSApp {
     static _getFirestore(): any;
     static getAuth(): auth.Auth;
     static getStorage(): storage.Storage;
-    static getFirestoreTimestamp(): firebase.firestore.Timestamp;
+    static getFirestoreTimestamp(): firestore.Timestamp;
 }
