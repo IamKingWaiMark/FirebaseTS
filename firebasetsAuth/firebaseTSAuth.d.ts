@@ -28,4 +28,13 @@ export declare class FirebaseTSAuth {
     public isEmailVerified(): boolean;
     public isLoggedIn(): boolean;
     public getAuth(): firebase.auth.Auth;
+    public checkState(authState: FirebaseTSAuthState): () => void;
+}
+
+export declare interface FirebaseTSAuthState {
+    whenChanged?: (user: firebase.User) => void;
+    whenLoggedIn?: (user: firebase.User) => void;
+    whenLoggedOut?: (user: firebase.User) => void;
+    whenLoggedInAndEmailNotVerified?: (user: firebase.User) => void;
+    whenLoggedInAndEmailVerified?: (user: firebase.User) => void;
 }

@@ -117,7 +117,6 @@ export class FirebaseTSAuth {
     }
 
     isLoggedIn(){
-        
         return this.auth.currentUser != undefined || this.auth.currentUser != null;
     }
 
@@ -128,5 +127,18 @@ export class FirebaseTSAuth {
         return this.auth;
     }
 
-
+    checkState(authState){
+        let user = this.getAuth().currentUser;
+        state.whenChange(user);
+        if(this.isLoggedIn()){ // Logged in
+            authState.whenLoggedIn(user);
+            if(this.isEmailVerified()){ // Email verified
+                authState.whenLoggedInAndEmailVerified(user);
+            } else { // Email is not verified
+                authState.whenLoggedInAndEmailNotVerified(user);
+            }
+        } else {  // Logged out
+            authState.whenLoggedOut(user);
+        }
+    }
 }
