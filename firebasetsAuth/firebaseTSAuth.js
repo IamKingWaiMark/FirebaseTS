@@ -129,16 +129,18 @@ export class FirebaseTSAuth {
 
     checkState(authState){
         let user = this.getAuth().currentUser;
-        state.whenChange(user);
+        // When Changed
+        try{authState.whenChanged(user);} catch (err) {}
+
         if(this.isLoggedIn()){ // Logged in
-            authState.whenLoggedIn(user);
+            try { authState.whenLoggedIn(user); } catch (err) {}
             if(this.isEmailVerified()){ // Email verified
-                authState.whenLoggedInAndEmailVerified(user);
+                try { authState.whenLoggedInAndEmailVerified(user); } catch (err) {}
             } else { // Email is not verified
-                authState.whenLoggedInAndEmailNotVerified(user);
+                try { authState.whenLoggedInAndEmailNotVerified(user); } catch (err) {}
             }
         } else {  // Logged out
-            authState.whenLoggedOut(user);
+            try { authState.whenLoggedOut(user); } catch (err) {}
         }
     }
 }
