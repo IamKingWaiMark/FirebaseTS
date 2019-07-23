@@ -130,7 +130,7 @@ export class FirebaseTSAuth {
     checkState(authState){
         let user = this.getAuth().currentUser;
         // When Changed
-        try{authState.whenChanged(user);} catch (err) {}
+        try{ authState.whenChanged(user); } catch (err) {}
 
         if(this.isLoggedIn()){ // Logged in
             try { authState.whenLoggedIn(user); } catch (err) {}

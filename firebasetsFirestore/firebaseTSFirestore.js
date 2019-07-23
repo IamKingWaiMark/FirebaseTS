@@ -9,6 +9,9 @@ export class FirebaseTSFirestore {
     appendArray(data){
         return FirebaseTSApp._getFirestore().FieldValue.arrayUnion(data);
     }
+    genDocId(){
+        return FirebaseTSApp.getFirestore().collection("TEMP").doc().id;
+    }  
     all(params){
         const batch = FirebaseTSApp.getFirestore().batch();
         for(let bo of params.operations){

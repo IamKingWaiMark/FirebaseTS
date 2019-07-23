@@ -1,5 +1,7 @@
 export declare class FirebaseTSFirestore {
     public appendArray<DT>(data: DT): firebase.firestore.FieldValue;
+
+    public genDocId(): string; 
     public all(
         params: {
             operations: BatchOperation<any>[],
