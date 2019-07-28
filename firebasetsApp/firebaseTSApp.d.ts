@@ -8,6 +8,7 @@ export declare class FirebaseTSApp {
         projectId?: string,
         storageBucket: string,
         messagingSenderId: string
+        appId: string
     }): any[];
     static getFirestore(): firestore.Firestore;
     static _getFirestore(): any;

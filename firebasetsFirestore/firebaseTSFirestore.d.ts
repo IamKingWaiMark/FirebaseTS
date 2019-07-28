@@ -66,7 +66,9 @@ export declare class FirebaseTSFirestore {
     public stopListeningToAll(): void;
 }
 
-
+export declare class Cursor {
+    constructor(cursor: "startAt" | "startAfter" | "endAt" | "endAfter", position: string []);
+}
 export declare class Where {
     constructor(where: string, condition: "<=" | "<" | "==" | ">" | ">=" | "array-contains", argument: any);
 }

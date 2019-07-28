@@ -288,7 +288,35 @@ export class FirebaseTSFirestore {
 
 
 }
+export class Cursor {
+    constructor(cursor, position){
+        this.cursor = cursor;
+        this.position = position;
+    }
 
+    getQuery(cr){
+        if(cursor == "startAt") {
+            return cr.startAt(position);
+        } else if(cursor == "endAt"){
+            return cr.endAt(position);
+        } else if(cursor == "startAfter") {
+            return cr.startAfter(position);
+        } else if(cursor == "endBefore") {
+            return cr.endBefore(position);
+        }
+    }
+    concatQuery(query){
+        if(cursor == "startAt") {
+            return query.startAt(position);
+        } else if(cursor == "endAt"){
+            return query.endAt(position);
+        } else if(cursor == "startAfter") {
+            return query.startAfter(position);
+        } else if(cursor == "endBefore") {
+            return query.endBefore(position);
+        }
+    }
+}
 
 export class Where {
 
