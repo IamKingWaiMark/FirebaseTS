@@ -70,7 +70,7 @@ export declare class Cursor {
     constructor(cursor: "startAt" | "startAfter" | "endAt" | "endAfter", position: string []);
 }
 export declare class Where {
-    constructor(where: string, condition: "<=" | "<" | "==" | ">" | ">=" | "array-contains", argument: any);
+    constructor(where: string, condition: "<=" | "<" | "==" | ">" | ">=" | "array-contains" | "array-contains-any" | "in", argument: any);
 }
 
 export declare class OrderBy {
