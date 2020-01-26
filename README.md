@@ -1,1 +1,1 @@
-[Click to go to the FirebaseTS Documentation](https://myfbts.firebaseapp.com/)
+[Click to go to the FirebaseTS Documentation](https://codeible.web.app/view/course/inGXZQSL9Xp7X7iSzuyZ)
