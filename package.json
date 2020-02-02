@@ -1,6 +1,6 @@
 {
   "name": "firebasets",
-  "version": "0.2.23",
+  "version": "1.0.0",
   "description": "Firebase in TypeScript",
   "main": "index.js",
   "scripts": {
