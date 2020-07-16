@@ -12,7 +12,7 @@ export declare class FirebaseTSFirestore {
 
     public create<DT>(
         params: {
-            from: string [],
+            path: string [],
             data: DT, 
             onComplete?: (docId: string) => void,
             onFail?: (err: any) => void
@@ -20,20 +20,20 @@ export declare class FirebaseTSFirestore {
         ): Promise<string>;
 
     public delete(params: {
-        from: string [], 
+        path: string [], 
         onComplete?: () => void,
         onFail?: (err: any) => void
     }): Promise<void>;
 
     public update<DT>(params: {
-        from: string [], 
+        path: string [], 
         data: DT, 
         onComplete?: (docRef: firebase.firestore.DocumentReference) => void,
         onFail?: (err: any) => void
     }): Promise<firebase.firestore.DocumentReference>;
 
     public getCollection(params: {
-        from: string [], 
+        path: string [], 
         where: Where[] | OrderBy [] | Limit [], 
         onComplete?: (result: firebase.firestore.QuerySnapshot) => void,
         onFail?: (err: any) => void
@@ -41,7 +41,7 @@ export declare class FirebaseTSFirestore {
 
     public getDocument(
         params: {
-            from: string [], 
+            path: string [], 
             onComplete?: (result: firebase.firestore.DocumentSnapshot) => void,
             onFail?: (err: any) => void
         }
@@ -50,7 +50,7 @@ export declare class FirebaseTSFirestore {
     public listenToCollection(
         params: {
             name: string, 
-            from: string [], 
+            path: string [], 
             where: Where[] | OrderBy [] | Limit [], 
             onUpdate: (result: firebase.firestore.QuerySnapshot) => void
         }
@@ -58,7 +58,7 @@ export declare class FirebaseTSFirestore {
 
     public listenToDocument(params: {
         name: string, 
-        from: string [], 
+        path: string [], 
         onUpdate: (result: firebase.firestore.DocumentSnapshot) => void
     }): void
     
@@ -82,7 +82,7 @@ export declare class Limit {
 }
 
 export declare class BatchOperation <DT>{
-    constructor(operation: "create" | "update", from: string[], data: DT);
-    constructor(operation: "delete", from: string[]);
+    constructor(operation: "create" | "update", path: string[], data: DT);
+    constructor(operation: "delete", path: string[]);
     getOperation(batch: firebase.firestore.WriteBatch): firebase.firestore.WriteBatch;
 }

@@ -102,7 +102,7 @@ export class FirebaseTSAuth {
      * the app detects a login state change. E.g. Signed in/out.
      * @param {*} onChange 
      */
-    listenToLoginStateChanges(onChange){
+    listenToSignInStateChanges(onChange){
         this.auth
         .onAuthStateChanged(
             (firebaseUser) => {
@@ -111,13 +111,13 @@ export class FirebaseTSAuth {
         );
     }
     /**
-     * Sends a verification email request to the logged in user.
+     * Sends a verification email request to the Signed in user.
      */
     sendVerificaitonEmail(){
         try{
-            this.validateIsLoggedIn();
+            this.validateIsSignedIn();
             this.auth.currentUser.sendEmailVerification();
-        } catch (err) { console.error(`${err} User must be logged in to use the sendVerificaitonEmail() function.`);}
+        } catch (err) { console.error(`${err} User must be signed in to use the sendVerificaitonEmail() function.`);}
     }
     /**
      * Sends an password reset instructional email to the user.
@@ -131,24 +131,24 @@ export class FirebaseTSAuth {
     else this.auth.sendPasswordResetEmail(params.email);
     }
     /**
-     * Check if the logged in user has verified his email.
+     * Check if the signed in user has verified his email.
      */
     isEmailVerified(){
         try{
-            this.validateIsLoggedIn();
+            this.validateIsSignedIn();
             return this.auth.currentUser.emailVerified;
-        } catch (err) { console.error(`User must be logged in to use the isEmailVerified() function. \n${err}`);}
+        } catch (err) { console.error(`User must be signed in to use the isEmailVerified() function. \n${err}`);}
         return false;
     }
     /**
-     * Check to see if there is any user logged in.
+     * Check to see if there is any user Signed in.
      */
-    isLoggedIn(){
+    isSignedIn(){
         return this.auth.currentUser != undefined || this.auth.currentUser != null;
     }
 
-    validateIsLoggedIn(){
-        if(!this.isLoggedIn()) throw new Error("No user was logged in.");
+    validateIsSignedIn(){
+        if(!this.isSignedIn()) throw new Error("No user was signed in.");
     }
     /**
      * Get an instance of the authencation object.
@@ -159,23 +159,23 @@ export class FirebaseTSAuth {
     /**
      * Used in conjuction with the listenToLoginStateChanges method.
      * Provide an FirebaseTSAuthState object to check the 5 states:
-     * whenChanged, whenLoggedIn, whenLoggedOut, whenLoggedInAndEmailNotVerified, whenLoggedInandEmailVerified
+     * whenChanged, whenSignedIn, whenSignedOut, whenSignedInAndEmailNotVerified, whenSignedInandEmailVerified
      * @param {*} authState 
      */
-    checkState(authState){
+    checkSignInState(authState){
         let user = this.getAuth().currentUser;
         // When Changed
         try{ authState.whenChanged(user); } catch (err) {}
 
-        if(this.isLoggedIn()){ // Logged in
-            try { authState.whenLoggedIn(user); } catch (err) {}
+        if(this.isSignedIn()){ // Signed in
+            try { authState.whenSignedIn(user); } catch (err) {}
             if(this.isEmailVerified()){ // Email verified
-                try { authState.whenLoggedInAndEmailVerified(user); } catch (err) {}
+                try { authState.whenSignedInAndEmailVerified(user); } catch (err) {}
             } else { // Email is not verified
-                try { authState.whenLoggedInAndEmailNotVerified(user); } catch (err) {}
+                try { authState.whenSignedInAndEmailNotVerified(user); } catch (err) {}
             }
-        } else {  // Logged out
-            try { authState.whenLoggedOut(user); } catch (err) {}
+        } else {  // Signed out
+            try { authState.whenSignedOut(user); } catch (err) {}
         }
     }
 }

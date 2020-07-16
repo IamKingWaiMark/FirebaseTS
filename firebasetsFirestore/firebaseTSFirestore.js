@@ -38,8 +38,8 @@ export class FirebaseTSFirestore {
         return new Promise(
             (resolved, rejected) => {
                 if(params.data == undefined || params.data == null) throw new Error("Error creating data. Data is null or undefined.");
-                if(this.isCollectionPath(params.from)) {
-                    let docRef = this.genCollectionReference(params.from).doc();
+                if(this.isCollectionPath(params.path)) {
+                    let docRef = this.genCollectionReference(params.path).doc();
                     docRef.set(params.data)
                     .then(
                         () => {
@@ -53,8 +53,8 @@ export class FirebaseTSFirestore {
                                 params.onFail(err);
                             } catch (err) {}
                         });
-                } else if(this.isDocumentPath(params.from)){
-                    let docRef = this.genDocumentReference(params.from);
+                } else if(this.isDocumentPath(params.path)){
+                    let docRef = this.genDocumentReference(params.path);
                     docRef.set(params.data)
                     .then(
                         () => {
@@ -77,8 +77,8 @@ export class FirebaseTSFirestore {
         return new Promise(
             (resolved, rejected) => {
                 // Check to see if the path provided leads to a collection.
-                this.checkDocumentPathValidity(params.from);
-                this.genDocumentReference(params.from).delete()
+                this.checkDocumentPathValidity(params.path);
+                this.genDocumentReference(params.path).delete()
                 .then(
                     () => {
                         resolved();
@@ -99,8 +99,8 @@ export class FirebaseTSFirestore {
         return new Promise(
             (resolved, rejected) => {
                 // Check to see if the path provided leads to a collection.
-                this.checkDocumentPathValidity(params.from);
-                const docRef = this.genDocumentReference(params.from);
+                this.checkDocumentPathValidity(params.path);
+                const docRef = this.genDocumentReference(params.path);
                 docRef.update(params.data)
                 .then(
                     () => {
@@ -120,7 +120,7 @@ export class FirebaseTSFirestore {
 
     // Get data from a collection once.
     getCollection(params){
-        let cr = this.genCollectionReference(params.from);
+        let cr = this.genCollectionReference(params.path);
         if((params.where != null || params.where != undefined) && params.where.length > 0) {
             return new Promise((resolved, rejected) => {
                 let query = undefined;
@@ -152,7 +152,7 @@ export class FirebaseTSFirestore {
     // Get data from a collection once.
     getDocument(params){
         return new Promise((resolved, rejected) => {
-            this.genDocumentReference(params.from).get()
+            this.genDocumentReference(params.path).get()
             .then(results => { 
                 resolved(results);     
                 try { params.onComplete(results); } catch (err) {}
@@ -169,7 +169,7 @@ export class FirebaseTSFirestore {
     // LISTEN TO DOCUMENT CHANGES
     listenToDocument(params){
         this.validateListenerName(params.name);  
-        this.addListener(params.name, this.genDocumentReference(params.from).onSnapshot(results => {
+        this.addListener(params.name, this.genDocumentReference(params.path).onSnapshot(results => {
             try{
                 params.onUpdate(results);
             } catch (err) {}
@@ -179,7 +179,7 @@ export class FirebaseTSFirestore {
     listenToCollection(params){
         this.validateListenerName(params.name);
         // Start listening operations.
-        let cr = this.genCollectionReference(params.from);
+        let cr = this.genCollectionReference(params.path);
         if((params.where != null || params.where != undefined) && params.where.length > 0) {
             let query = undefined;
             const whereArr = Array(params.where)[0];
@@ -201,11 +201,11 @@ export class FirebaseTSFirestore {
         }));
     }
     // GENERATE A COLLECTION REFERENCE FROM A PATH.
-    genCollectionReference(from){
+    genCollectionReference(path){
         // Check to see if the path provided leads to a collection.
-        this.checkCollectionPathValidity(from);
+        this.checkCollectionPathValidity(path);
 
-        const fromArr = Array(from)[0];
+        const fromArr = Array(path)[0];
         let cr = undefined;
         let dr = undefined;
         for(let i = 0; i < fromArr.length; i++){
@@ -222,11 +222,11 @@ export class FirebaseTSFirestore {
         return cr;
     }
     // GENERATE A DOCUMENT REFERENCE FROM A PATH.
-    genDocumentReference(from){
+    genDocumentReference(path){
         // Check to see if the path provided leads to a collection.
-        this.checkDocumentPathValidity(from);
+        this.checkDocumentPathValidity(path);
 
-        const fromArr = Array(from)[0];
+        const fromArr = Array(path)[0];
         let cr = undefined;
         let dr = undefined;
         for(let i = 0; i < fromArr.length; i++){
@@ -269,20 +269,20 @@ export class FirebaseTSFirestore {
         else if(this.listeners.get(listenerName) != undefined) throw `Listener name: ${listenerName} is already taken.`;
     }
     // COLLECTION VALIDATION METHODS //
-    checkCollectionPathValidity(from){
-        if(from == null || from == undefined || from.length <= 0 || !this.isCollectionPath(from)) throw "Not a valid path to a collection.";
+    checkCollectionPathValidity(path){
+        if(path == null || path == undefined || path.length <= 0 || !this.isCollectionPath(path)) throw "Not a valid path to a collection.";
     }
-    isCollectionPath(from){
-        return Array(from)[0].length % 2 == 1;
+    isCollectionPath(path){
+        return Array(path)[0].length % 2 == 1;
     }
     // COLLECTION VALIDATION METHODS END //
 
     // DOCUMENT VALIDATION METHODS //
-    checkDocumentPathValidity(from){
-        if(from == null || from == undefined || from.length <= 0 || !this.isDocumentPath(from)) throw "Not a valid path to a document.";
+    checkDocumentPathValidity(path){
+        if(path == null || path == undefined || path.length <= 0 || !this.isDocumentPath(path)) throw "Not a valid path to a document.";
     }
-    isDocumentPath(from){
-        return Array(from)[0].length % 2 == 0;
+    isDocumentPath(path){
+        return Array(path)[0].length % 2 == 0;
     }
     // DOCUMENT VALIDATION METHODS END //
 
@@ -364,35 +364,35 @@ export class Limit {
 
 export class BatchOperation {
 
-    constructor(operation, from, data){
+    constructor(operation, path, data){
         this.operation = operation;
-        this.from = from;
+        this.path = path;
         this.data = data;
 
     }
     getOperation(batch){
         switch(this.operation){
             case "create":
-                return batch.set(this.genCollectionReference(this.from).doc(), this.data);
+                return batch.set(this.genCollectionReference(this.path).doc(), this.data);
             case "update":
-                return batch.update(this.genDocumentReference(this.from), this.data);
+                return batch.update(this.genDocumentReference(this.path), this.data);
             case "delete":
-                return batch.delete(this.genDocumentReference(this.from));
+                return batch.delete(this.genDocumentReference(this.path));
         }
     }
     // COLLECTION VALIDATION METHODS //
     checkCollectionPathValidity(from){
-        if(from == null || from == undefined || from.length <= 0 || !this.isCollectionPath(from)) throw "Not a valid path to a collection.";
+        if(path == null || path == undefined || path.length <= 0 || !this.isCollectionPath(path)) throw "Not a valid path to a collection.";
     }
-    isCollectionPath(from){
-        return Array(from)[0].length % 2 == 1;
+    isCollectionPath(path){
+        return Array(path)[0].length % 2 == 1;
     }
     // GENERATE A COLLECTION REFERENCE FROM A PATH.
-    genCollectionReference(from){
+    genCollectionReference(path){
         // Check to see if the path provided leads to a collection.
-        this.checkCollectionPathValidity(from);
+        this.checkCollectionPathValidity(path);
 
-        const fromArr = Array(from)[0];
+        const fromArr = Array(path)[0];
         let cr = undefined;
         let dr = undefined;
         for(let i = 0; i < fromArr.length; i++){
@@ -408,19 +408,19 @@ export class BatchOperation {
         }
         return cr;
     }
-    isDocumentPath(from){
-        return Array(from)[0].length % 2 == 0;
+    isDocumentPath(path){
+        return Array(path)[0].length % 2 == 0;
     }
     // DOCUMENT VALIDATION METHODS //
     checkDocumentPathValidity(from){
-        if(from == null || from == undefined || from.length <= 0 || !this.isDocumentPath(from)) throw "Not a valid path to a document.";
+        if(path == null || path == undefined || path.length <= 0 || !this.isDocumentPath(path)) throw "Not a valid path to a document.";
     }
     // GENERATE A DOCUMENT REFERENCE FROM A PATH.
-    genDocumentReference(from){
+    genDocumentReference(path){
         // Check to see if the path provided leads to a collection.
-        this.checkDocumentPathValidity(from);
+        this.checkDocumentPathValidity(path);
     
-        const fromArr = Array(from)[0];
+        const fromArr = Array(path)[0];
         let cr = undefined;
         let dr = undefined;
         for(let i = 0; i < fromArr.length; i++){

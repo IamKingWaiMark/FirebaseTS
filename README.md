@@ -1,1 +1,6 @@
-[Click to go to the FirebaseTS Documentation](https://codeible.web.app/view/course/inGXZQSL9Xp7X7iSzuyZ)
+V1.0.3
+
+Added Comments
+
+Changed FirebaseTSAuth methods to match each other in context - Signed In/Out vs Logged In/Out .
+Changed the params "from" to "path" in Firestore.

@@ -1,3 +1,4 @@
+import { } from 'firebase/index';
 export declare class FirebaseTSAuth {
     public createAccountWith(params: {
         email: string, 
@@ -19,22 +20,22 @@ export declare class FirebaseTSAuth {
         onComplete?: () => void,
         onFail?: (error: any) => void
     }): Promise<void>;
-    public listenToLoginStateChanges(onChange: (firebaseUser: firebase.User) => void): void;
+    public listenToSignInStateChanges(onChange: (firebaseUser: firebase.User) => void): void;
     public sendVerificaitonEmail(): void;
     public sendPasswordResetEmail(params: {
         email: string, 
         onComplete?: (error?: string) => void
     }): void;
     public isEmailVerified(): boolean;
-    public isLoggedIn(): boolean;
+    public isSignedIn(): boolean;
     public getAuth(): firebase.auth.Auth;
-    public checkState(authState: FirebaseTSAuthState): () => void;
+    public checkSignInState(authState: FirebaseTSAuthState): () => void;
 }
 
 export declare interface FirebaseTSAuthState {
     whenChanged?: (user: firebase.User) => void;
-    whenLoggedIn?: (user: firebase.User) => void;
-    whenLoggedOut?: (user: firebase.User) => void;
-    whenLoggedInAndEmailNotVerified?: (user: firebase.User) => void;
-    whenLoggedInAndEmailVerified?: (user: firebase.User) => void;
+    whenSignedIn?: (user: firebase.User) => void;
+    whenSignedOut?: (user: firebase.User) => void;
+    whenSignedInAndEmailNotVerified?: (user: firebase.User) => void;
+    whenSignedInAndEmailVerified?: (user: firebase.User) => void;
 }
