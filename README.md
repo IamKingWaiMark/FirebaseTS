@@ -1,5 +1,5 @@
-V1.0.4
+V1.0.5
 
 Added Comments
 
-Minified
+Fixed path issue from batch operation

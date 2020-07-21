@@ -381,7 +381,7 @@ export class BatchOperation {
         }
     }
     // COLLECTION VALIDATION METHODS //
-    checkCollectionPathValidity(from){
+    checkCollectionPathValidity(path){
         if(path == null || path == undefined || path.length <= 0 || !this.isCollectionPath(path)) throw "Not a valid path to a collection.";
     }
     isCollectionPath(path){
@@ -412,7 +412,7 @@ export class BatchOperation {
         return Array(path)[0].length % 2 == 0;
     }
     // DOCUMENT VALIDATION METHODS //
-    checkDocumentPathValidity(from){
+    checkDocumentPathValidity(path){
         if(path == null || path == undefined || path.length <= 0 || !this.isDocumentPath(path)) throw "Not a valid path to a document.";
     }
     // GENERATE A DOCUMENT REFERENCE FROM A PATH.
