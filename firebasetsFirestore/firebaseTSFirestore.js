@@ -373,7 +373,12 @@ export class BatchOperation {
     getOperation(batch){
         switch(this.operation){
             case "create":
-                return batch.set(this.genCollectionReference(this.path).doc(), this.data);
+                let isCollection = this.isCollectionPath(this.path);
+                if(isCollection) {
+                    return batch.set(this.genCollectionReference(this.path).doc(), this.data);
+                } else {
+                    return batch.set(this.genDocumentReference(this.path), this.data);
+                }
             case "update":
                 return batch.update(this.genDocumentReference(this.path), this.data);
             case "delete":

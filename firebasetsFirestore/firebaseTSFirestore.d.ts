@@ -1,3 +1,4 @@
+import { } from 'firebase/index';
 export declare class FirebaseTSFirestore {
     public appendArray<DT>(data: DT): firebase.firestore.FieldValue;
 
