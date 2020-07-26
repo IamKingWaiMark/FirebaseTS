@@ -1,8 +1,6 @@
-V1.0.5
+V1.1.0
 
-Added Comments
-
-Fixed path issue from batch operation
+Firestore increment
 
 
 <h3>Library Documentation videos</h3>

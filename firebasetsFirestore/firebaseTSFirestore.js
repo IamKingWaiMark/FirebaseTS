@@ -9,6 +9,9 @@ export class FirebaseTSFirestore {
     appendArray(data){
         return FirebaseTSApp._getFirestore().FieldValue.arrayUnion(data);
     }
+    increment(value) {
+        return FirebaseTSApp._getFirestore().FieldValue.increment(value);
+    }
     genDocId(){
         return FirebaseTSApp.getFirestore().collection("TEMP").doc().id;
     }  

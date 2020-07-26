@@ -1,7 +1,7 @@
 import { } from 'firebase/index';
 export declare class FirebaseTSFirestore {
     public appendArray<DT>(data: DT): firebase.firestore.FieldValue;
-
+    public increment(value: number): firebase.firestore.FieldValue;
     public genDocId(): string; 
     public all(
         params: {
