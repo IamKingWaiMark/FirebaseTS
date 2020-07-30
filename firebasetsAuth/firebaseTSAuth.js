@@ -1,4 +1,4 @@
-import { FirebaseTSApp } from '../firebasetsApp/firebaseTSApp';
+import { FirebaseTSApp, firebaseTSApp } from '../firebasetsApp/firebaseTSApp';
 require("firebase/auth");
 
 export class FirebaseTSAuth {
@@ -60,22 +60,60 @@ export class FirebaseTSAuth {
     signInWith(params){
         return new Promise(
             (resolved, rejected) => {
-                this.auth.signInWithEmailAndPassword(
-                    params.email,
-                    params.password
-                ).then(userCredentials => {
-                    resolved(userCredentials);
-                    try{
-                        params.onComplete(userCredentials);
-                    } catch (err) {}
-                }).catch((error) => {
-                    rejected(error);
-                    try{
-                        params.onFail(error);
-                    } catch (err) {}    
-                });
+                if(params.provider) {
+                    this.auth.signInWithPopup(this.getProvider(params.provider))
+                    .then(userCredentials => {
+                        resolved(userCredentials);
+                        try{
+                            params.onComplete(userCredentials);
+                        } catch (err) {}
+                    }).catch((error) => {
+                        rejected(error);
+                        try{
+                            params.onFail(error);
+                        } catch (err) {}    
+                    });
+                } else {
+                    this.auth.signInWithEmailAndPassword(
+                        params.email,
+                        params.password
+                    ).then(userCredentials => {
+                        resolved(userCredentials);
+                        try{
+                            params.onComplete(userCredentials);
+                        } catch (err) {}
+                    }).catch((error) => {
+                        rejected(error);
+                        try{
+                            params.onFail(error);
+                        } catch (err) {}    
+                    });
+                }
+
             }
         );
+    }
+    
+    getProvider(provider){
+        const providerStr = provider.toLowerCase();
+
+        switch(providerStr) {
+            case "google": 
+                return new firebaseTSApp.auth.GoogleAuthProvider(); 
+            case "apple": 
+                return new firebaseTSApp.auth.OAuthProvider("apple.com"); 
+            case "facebook": 
+                return new firebaseTSApp.auth.FacebookAuthProvider(); 
+            case "yahoo": 
+                return new firebaseTSApp.auth.OAuthProvider("yahoo.com"); 
+            case "github": 
+                return new firebaseTSApp.auth.GithubAuthProvider(); 
+            case "twitter": 
+                return new firebaseTSApp.auth.TwitterAuthProvider(); 
+            case "microsoft": 
+                return new firebaseTSApp.auth.OAuthProvider("microsoft.com"); 
+        }
+        
     }
     /**
      * Signs out out the app.

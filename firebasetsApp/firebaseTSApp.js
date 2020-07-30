@@ -1,4 +1,4 @@
-const firebaseTSApp = require("firebase/app");
+export const firebaseTSApp = require("firebase/app");
 
 export class FirebaseTSApp {
     /**
