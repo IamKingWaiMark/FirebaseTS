@@ -1,6 +1,7 @@
-V1.2.0
+V1.2.2
 
-Firebase provider authentication
+Firebase provider authentication.
+Update to signInWith provider arguments.
 
 
 <h3>Library Documentation videos</h3>

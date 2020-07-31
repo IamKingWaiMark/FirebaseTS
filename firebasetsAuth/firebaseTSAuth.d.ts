@@ -11,7 +11,7 @@ export declare class FirebaseTSAuth {
         onFail?: (error: any) => void
     }):Promise<firebase.auth.UserCredential>;
     public signInWith(params: {
-        provider?: string,
+        provider?: "Google" | "Yahoo" | "Facebook" | "Apple" | "Github" | "Twitter" | "Microsoft",
         email?: string, 
         password?: string, 
         onComplete?: (userCredentials: firebase.auth.UserCredential) => void,
