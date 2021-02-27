@@ -112,6 +112,7 @@ export class FirebaseTSAuth {
                 return new firebaseTSApp.auth.TwitterAuthProvider(); 
             case "microsoft": 
                 return new firebaseTSApp.auth.OAuthProvider("microsoft.com"); 
+
         }
         
     }

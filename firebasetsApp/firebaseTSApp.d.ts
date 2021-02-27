@@ -4,11 +4,11 @@ export declare class FirebaseTSApp {
     static init(configuration: {
         apiKey?: string,
         authDomain?: string,
-        databaseURL: string,
+        databaseURL?: string,
         projectId?: string,
-        storageBucket: string,
-        messagingSenderId: string
-        appId: string
+        storageBucket?: string,
+        messagingSenderId?: string
+        appId?: string
     }): any[];
     static getFirestore(): firestore.Firestore;
     static _getFirestore(): any;

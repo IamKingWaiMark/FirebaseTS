@@ -1,7 +1,6 @@
-V1.2.2
+V1.2.3
 
-Firebase provider authentication.
-Update to signInWith provider arguments.
+Update for FirebaseTSApp.init() to work for most updated Firebase.
 
 
 <h3>Library Documentation videos</h3>
