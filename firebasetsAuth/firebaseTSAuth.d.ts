@@ -22,7 +22,7 @@ export declare class FirebaseTSAuth {
         onFail?: (error: any) => void
     }): Promise<void>;
     public listenToSignInStateChanges(onChange: (firebaseUser: firebase.User) => void): void;
-    public sendVerificaitonEmail(): void;
+    public sendVerificationEmail(): void;
     public sendPasswordResetEmail(params: {
         email: string, 
         onComplete?: (error?: string) => void

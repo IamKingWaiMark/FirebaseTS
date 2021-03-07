@@ -152,7 +152,7 @@ export class FirebaseTSAuth {
     /**
      * Sends a verification email request to the Signed in user.
      */
-    sendVerificaitonEmail(){
+    sendVerificationEmail(){
         try{
             this.validateIsSignedIn();
             this.auth.currentUser.sendEmailVerification();
