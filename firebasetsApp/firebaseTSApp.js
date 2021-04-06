@@ -1,6 +1,7 @@
 export const firebaseTSApp = require("firebase/app");
 
 export class FirebaseTSApp {
+
     /**
      * Must be called at the beginning before using any other parts of FirebaseTS.
      * @param {*} configuration the Firebase configuration. 

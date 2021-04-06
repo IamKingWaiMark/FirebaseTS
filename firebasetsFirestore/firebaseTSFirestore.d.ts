@@ -62,9 +62,12 @@ export declare class FirebaseTSFirestore {
         path: string [], 
         onUpdate: (result: firebase.firestore.DocumentSnapshot) => void
     }): void
+
     
     public stopListeningTo(listenerName: string): void;
     public stopListeningToAll(): void;
+
+    public genCollectionReference(path: string []):  firebase.firestore.CollectionReference;
 }
 
 export declare class Cursor {
