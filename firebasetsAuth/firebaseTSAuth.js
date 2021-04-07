@@ -104,22 +104,21 @@ export class FirebaseTSAuth {
     
     getProvider(provider){
         const providerStr = provider.toLowerCase();
-
         switch(providerStr) {
             case "google": 
-                return new firebaseTSApp.auth.GoogleAuthProvider(); 
+                return new firebaseTSApp.default.auth.GoogleAuthProvider(); 
             case "apple": 
-                return new firebaseTSApp.auth.OAuthProvider("apple.com"); 
+                return new firebaseTSApp.default.auth.OAuthProvider("apple.com"); 
             case "facebook": 
-                return new firebaseTSApp.auth.FacebookAuthProvider(); 
+                return new firebaseTSApp.default.auth.FacebookAuthProvider(); 
             case "yahoo": 
-                return new firebaseTSApp.auth.OAuthProvider("yahoo.com"); 
+                return new firebaseTSApp.default.auth.OAuthProvider("yahoo.com"); 
             case "github": 
-                return new firebaseTSApp.auth.GithubAuthProvider(); 
+                return new firebaseTSApp.default.auth.GithubAuthProvider(); 
             case "twitter": 
-                return new firebaseTSApp.auth.TwitterAuthProvider(); 
+                return new firebaseTSApp.default.auth.TwitterAuthProvider(); 
             case "microsoft": 
-                return new firebaseTSApp.auth.OAuthProvider("microsoft.com"); 
+                return new firebaseTSApp.default.auth.OAuthProvider("microsoft.com"); 
 
         }
         
