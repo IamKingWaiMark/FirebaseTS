@@ -1,6 +1,6 @@
 {
   "name": "firebasets",
-  "version": "1.2.7",
+  "version": "1.2.10",
   "description": "Firebase in TypeScript",
   "main": "index.js",
   "scripts": {
@@ -22,6 +22,6 @@
   },
   "homepage": "https://github.com/IamKingWaiMark/FirebaseTS#readme",
   "dependencies": {
-    "firebase": "^7.5.2"
+    "firebase": "^8.3.2"
   }
 }

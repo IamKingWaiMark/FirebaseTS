@@ -7,34 +7,34 @@ export class FirebaseTSApp {
      * @param {*} configuration the Firebase configuration. 
      */
     static init(configuration){
-        firebaseTSApp.initializeApp(configuration);
+        firebaseTSApp.default.initializeApp(configuration);
         return [];
     }
     /**
      * Gets a Firestore object.
      */
     static getFirestore(){
-        return firebaseTSApp.firestore();
+        return firebaseTSApp.default.firestore();
     }
     static _getFirestore(){
-        return firebaseTSApp.firestore;
+        return firebaseTSApp.default.firestore;
     }
     /**
      * Gets a Firebase Authentication object.
      */
     static getAuth(){
-        return firebaseTSApp.auth();
+        return firebaseTSApp.default.auth();
     }
     /**
      * Gets a Firebase Storage object.
      */
     static getStorage(){
-        return firebaseTSApp.storage();
+        return firebaseTSApp.default.storage();
     }
     /**
      * Get the current timestamp in the Firebase Firestore database server.
      */
     static getFirestoreTimestamp(){
-        return firebaseTSApp.firestore.Timestamp.now();
+        return firebaseTSApp.default.firestore.Timestamp.now();
     }
 }

@@ -16,15 +16,17 @@ export class FirebaseTSAuth {
                     params.email,
                     params.password
                 ).then(userCredentials => {
-                    resolved(userCredentials);
+                   
                     try{
                         params.onComplete(userCredentials);
                     } catch (err) {}
+                    resolved(userCredentials);
                 }).catch((error) => {
-                    rejected(error);
+                   
                     try{
                         params.onFail(error);
-                    } catch (err) {}    
+                    } catch (err) {}  
+                    rejected(error);  
                 });
             }
         );
@@ -39,16 +41,18 @@ export class FirebaseTSAuth {
                 this.auth.signInAnonymously()
                 .then(
                     result => {
-                        resolved(result);
+                        
                         try{
                             params.onComplete(result);
                         } catch (err) {}
+                        resolved(result);
                     }
                 ).catch(err => {
-                    rejected(err);
+                    
                     try{
                         params.onFail(err);
                     } catch (err) {}
+                    rejected(err);
                 });
             }
         )
@@ -63,30 +67,34 @@ export class FirebaseTSAuth {
                 if(params.provider) {
                     this.auth.signInWithPopup(this.getProvider(params.provider))
                     .then(userCredentials => {
-                        resolved(userCredentials);
+                        
                         try{
                             params.onComplete(userCredentials);
                         } catch (err) {}
+                        resolved(userCredentials);
                     }).catch((error) => {
-                        rejected(error);
+                        
                         try{
                             params.onFail(error);
                         } catch (err) {}    
+                        rejected(error);
                     });
                 } else {
                     this.auth.signInWithEmailAndPassword(
                         params.email,
                         params.password
                     ).then(userCredentials => {
-                        resolved(userCredentials);
+                       
                         try{
                             params.onComplete(userCredentials);
                         } catch (err) {}
+                        resolved(userCredentials);
                     }).catch((error) => {
-                        rejected(error);
+                        
                         try{
                             params.onFail(error);
-                        } catch (err) {}    
+                        } catch (err) {}  
+                        rejected(error);  
                     });
                 }
 
@@ -125,11 +133,13 @@ export class FirebaseTSAuth {
             (resolved, rejected) => {
                 if(params)
                 this.auth.signOut().then(() => {
-                    resolved();
-                    try{ params.onComplete(); } catch (err) {}      
+                    
+                    try{ params.onComplete(); } catch (err) {}   
+                    resolved();   
                 }).catch(() => { 
-                    rejected(new Error("Failed to signout."));
+                    
                     try{ params.onFail(); } catch (err) {}  
+                    rejected(new Error("Failed to signout."));
                 });
              else 
                 this.auth.signOut(); 

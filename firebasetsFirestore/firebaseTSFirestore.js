@@ -46,30 +46,34 @@ export class FirebaseTSFirestore {
                     docRef.set(params.data)
                     .then(
                         () => {
-                            resolved(docRef.id);
+                            
                             try{                       
                                 params.onComplete(docRef.id);
                             } catch (err) {}
+                            resolved(docRef.id);
                         }).catch(err => {
-                            rejected(err);
+                            
                             try{
                                 params.onFail(err);
                             } catch (err) {}
+                            rejected(err);
                         });
                 } else if(this.isDocumentPath(params.path)){
                     let docRef = this.genDocumentReference(params.path);
                     docRef.set(params.data)
                     .then(
                         () => {
-                            resolved(docRef.id);
+                            
                             try{
                                 params.onComplete(docRef.id);
                             } catch (err) {}
+                            resolved(docRef.id);
                         }).catch(err => {
-                            rejected(err);
+                            
                             try{
                                 params.onFail(err);
                             } catch (err) {}
+                            rejected(err);
                         });
                 }
             }
@@ -84,15 +88,17 @@ export class FirebaseTSFirestore {
                 this.genDocumentReference(params.path).delete()
                 .then(
                     () => {
-                        resolved();
+                        
                         try{
                             params.onComplete();
                         } catch (err) {}
+                        resolved();
                     }).catch(err => {
-                        rejected(err);
+                        
                         try{
                             params.onFail(err);
                         } catch (err) {}
+                        rejected(err);
                     });
             }
         );
@@ -107,15 +113,17 @@ export class FirebaseTSFirestore {
                 docRef.update(params.data)
                 .then(
                     () => {
-                        resolved(docRef);
+                        
                         try{
                             params.onComplete(docRef);
                         } catch (err) {}
+                        resolved(docRef);
                     }).catch(err => {
-                        rejected(err);
+                        
                         try{
                             params.onFail(err);
                         } catch (err) {}
+                        rejected(err);
                     });
                 }
         );
@@ -133,21 +141,25 @@ export class FirebaseTSFirestore {
                     else query = whereArr[i].concatQuery(query);
                 }
                 query.get().then(results => { 
-                    resolved(results);
+                    
                     try{ params.onComplete(results); } catch (err) {}
+                    resolved(results);
                 }).catch(err=> {
-                    rejected(err);
+                   
                     try{ params.onFail(err); } catch (err) {}
+                    rejected(err);
                 });
             });
         } else {
             return new Promise((resolved, rejected) => {
                 cr.get().then(results => { 
-                    resolved(results);
+                    
                     try{ params.onComplete(results); } catch (err) {}
+                    resolved(results);
                 }).catch(err=> {
-                    rejected(err);
+                    
                     try{ params.onFail(err); } catch (err) {}
+                    rejected(err);
                 });
             });
         }
@@ -157,14 +169,16 @@ export class FirebaseTSFirestore {
         return new Promise((resolved, rejected) => {
             this.genDocumentReference(params.path).get()
             .then(results => { 
-                resolved(results);     
+                    
                 try { params.onComplete(results); } catch (err) {}
+                resolved(results); 
             })
             .catch(err=> {
-                rejected(err);
+                
                 try{
                     params.onFail(err);
                 } catch (err) {}
+                rejected(err);
             });
         });
         

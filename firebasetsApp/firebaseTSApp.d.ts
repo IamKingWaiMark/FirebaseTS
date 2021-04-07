@@ -1,4 +1,4 @@
-import { auth, firestore, storage } from 'firebase/app';
+import {  } from 'firebase/app';
 
 export declare class FirebaseTSApp {
     static init(configuration: {
@@ -10,9 +10,9 @@ export declare class FirebaseTSApp {
         messagingSenderId?: string
         appId?: string
     }): any[];
-    static getFirestore(): firestore.Firestore;
+    static getFirestore(): firebase.default.firestore.Firestore;
     static _getFirestore(): any;
-    static getAuth(): auth.Auth;
-    static getStorage(): storage.Storage;
-    static getFirestoreTimestamp(): firestore.Timestamp;
+    static getAuth(): firebase.default.auth.Auth;
+    static getStorage(): firebase.default.storage.Storage;
+    static getFirestoreTimestamp(): firebase.default.firestore.Timestamp;
 }
