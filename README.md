@@ -1,7 +1,6 @@
-V1.2.3
+V1.2.13
 
-Update for FirebaseTSApp.init() to work for most updated Firebase.
-
+Fixed double reads from listenToCollection
 
 <h3>Library Documentation videos</h3>
 
