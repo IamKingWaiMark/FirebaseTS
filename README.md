@@ -4,7 +4,7 @@ Fixed double reads from listenToCollection
 
 <h3>Library Documentation videos</h3>
 
-[Youtube Playlist](https://www.youtube.com/playlist?list=PLfamdLYuDv-Kt3BwW8Ib7brBc8L0C4GJv)
+[Youtube Playlist - Firestore](https://www.youtube.com/playlist?list=PLfamdLYuDv-IQ3PIjJSC4fD0i9TjzFI-Y)
 
 <h3>Documentation</h3>
 
